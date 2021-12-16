@@ -3,7 +3,6 @@ package com.projetoforum.forum.model;
 import com.projetoforum.forum.controller.form.TopicoForm;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ public class Topico {
     private Usuario autor;
     private String titulo;
     private String mensagem;
-    private LocalDateTime dataCriacao = LocalDateTime.now();
+    private String dataCriacao;
     private StatusTopico status = StatusTopico.NAO_RESPONDIDO;
     private String categoria;
     private List<Resposta> resposta = new ArrayList<>();
@@ -64,11 +63,11 @@ public class Topico {
         this.mensagem = mensagem;
     }
 
-    public LocalDateTime getDataCriacao() {
+    public String getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(LocalDateTime dataCriacao) {
+    public void setDataCriacao(String dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 

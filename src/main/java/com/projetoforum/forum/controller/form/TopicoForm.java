@@ -1,8 +1,13 @@
 package com.projetoforum.forum.controller.form;
 
+import javax.validation.constraints.NotBlank;
+
 public class TopicoForm {
+    @NotBlank
     private String titulo;
+    @NotBlank
     private String mensagem;
+    @NotBlank
     private String categoria;
 
     public String getTitulo() {
