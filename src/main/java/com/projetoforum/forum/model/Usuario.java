@@ -1,5 +1,6 @@
 package com.projetoforum.forum.model;
 
+import com.projetoforum.forum.controller.form.UsuarioForm;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,11 +17,10 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String id, String nome, String email, String senha) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
+    public Usuario(UsuarioForm usuarioForm) {
+        this.nome = usuarioForm.getNome();
+        this.email = usuarioForm.getEmail();
+        this.senha = usuarioForm.getSenha();
     }
 
     public String getId() {
