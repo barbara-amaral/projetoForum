@@ -8,7 +8,7 @@ public class TopicoForm {
     @NotBlank
     private String mensagem;
     @NotBlank
-    private String categoria;
+    private String tag;
 
     public String getTitulo() {
         return titulo;
@@ -26,12 +26,12 @@ public class TopicoForm {
         this.mensagem = mensagem;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public String getTag() {
+        return tag;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setTag(String categoria) {
+        this.tag = categoria;
     }
 
 }

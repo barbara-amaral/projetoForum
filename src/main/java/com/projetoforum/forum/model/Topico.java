@@ -17,7 +17,7 @@ public class Topico {
     private String mensagem;
     private String dataCriacao;
     private StatusTopico status = StatusTopico.NAO_RESPONDIDO;
-    private String categoria;
+    private String tag;
     private List<Resposta> resposta = new ArrayList<>();
 
 
@@ -27,7 +27,7 @@ public class Topico {
     public Topico(TopicoForm form) {
         this.titulo = form.getTitulo();
         this.mensagem = form.getMensagem();
-        this.categoria = form.getCategoria();
+        this.tag = form.getTag();
     }
 
     public String getId() {
@@ -78,12 +78,12 @@ public class Topico {
         this.status = status;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public String getTag() {
+        return tag;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public List<Resposta> getResposta() {
@@ -99,11 +99,11 @@ public class Topico {
         if (this == o) return true;
         if (!(o instanceof Topico)) return false;
         Topico topico = (Topico) o;
-        return getId().equals(topico.getId()) && getAutor().equals(topico.getAutor()) && getTitulo().equals(topico.getTitulo()) && getMensagem().equals(topico.getMensagem()) && getDataCriacao().equals(topico.getDataCriacao()) && getStatus() == topico.getStatus() && getCategoria().equals(topico.getCategoria()) && Objects.equals(getResposta(), topico.getResposta());
+        return getId().equals(topico.getId()) && getAutor().equals(topico.getAutor()) && getTitulo().equals(topico.getTitulo()) && getMensagem().equals(topico.getMensagem()) && getDataCriacao().equals(topico.getDataCriacao()) && getStatus() == topico.getStatus() && getTag().equals(topico.getTag()) && Objects.equals(getResposta(), topico.getResposta());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getAutor(), getTitulo(), getMensagem(), getDataCriacao(), getStatus(), getCategoria(), getResposta());
+        return Objects.hash(getId(), getAutor(), getTitulo(), getMensagem(), getDataCriacao(), getStatus(), getTag(), getResposta());
     }
 }

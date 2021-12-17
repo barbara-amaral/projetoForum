@@ -2,16 +2,19 @@ package com.projetoforum.forum.controller.dto;
 
 import com.projetoforum.forum.model.Topico;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class TopicoDto {
     private String titulo;
     private String mensagem;
-    private String categoria;
+    private String tag;
     private String dataCriacao;
 
     public TopicoDto(Topico topico) {
         this.titulo = topico.getTitulo();
         this.mensagem = topico.getMensagem();
-        this.categoria = topico.getCategoria();
+        this.tag = topico.getTag();
         this.dataCriacao = topico.getDataCriacao();
     }
 
@@ -27,7 +30,11 @@ public class TopicoDto {
         return dataCriacao;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public String getTag() {
+        return tag;
+    }
+
+    public static List<TopicoDto> converter(List<Topico> topico){
+        return topico.stream().map(TopicoDto::new).collect(Collectors.toList());
     }
 }
