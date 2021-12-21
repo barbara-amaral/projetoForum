@@ -1,23 +1,11 @@
 package com.projetoforum.forum.controller.form;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-public class UsuarioForm {
-    @NotBlank
-    private String nome;
-    @NotBlank @Email
+public class LoginForm {
+
     private String email;
-    @NotBlank
     private String senha;
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 
     public String getEmail() {
         return email;
@@ -35,4 +23,7 @@ public class UsuarioForm {
         this.senha = senha;
     }
 
+    public UsernamePasswordAuthenticationToken converter() {
+        return new UsernamePasswordAuthenticationToken(email, senha);
+    }
 }
