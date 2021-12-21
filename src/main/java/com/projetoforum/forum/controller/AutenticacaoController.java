@@ -1,5 +1,6 @@
 package com.projetoforum.forum.controller;
 
+import com.projetoforum.forum.controller.dto.TokenDto;
 import com.projetoforum.forum.controller.form.LoginForm;
 import com.projetoforum.forum.model.Usuario;
 import com.projetoforum.forum.service.TokenService;
@@ -27,7 +28,7 @@ public class AutenticacaoController {
     private TokenService tokenService;
 
     @PostMapping
-    public Object autenticar(@RequestBody @Valid LoginForm form){
+    public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginForm form){
 
 
 
@@ -35,9 +36,7 @@ public class AutenticacaoController {
         try{
             Authentication authentication = authenticationManager.authenticate(dadosLogin);
             String token = tokenService.gerarToken(authentication);
-            System.out.println(token);
-
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(new TokenDto(token, "Bearer"));
         }catch (AuthenticationException e){
             return ResponseEntity.badRequest().build();
         }
