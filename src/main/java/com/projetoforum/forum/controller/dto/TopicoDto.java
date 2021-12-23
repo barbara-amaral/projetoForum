@@ -10,12 +10,14 @@ public class TopicoDto {
     private String mensagem;
     private String tag;
     private String dataCriacao;
+    private String autor;
 
     public TopicoDto(Topico topico) {
         this.titulo = topico.getTitulo();
         this.mensagem = topico.getMensagem();
         this.tag = topico.getTag();
         this.dataCriacao = topico.getDataCriacao();
+        this.autor = topico.getAutor().getNome();
     }
 
     public String getTitulo() {
@@ -32,6 +34,10 @@ public class TopicoDto {
 
     public String getTag() {
         return tag;
+    }
+
+    public String getAutor() {
+        return autor;
     }
 
     public static List<TopicoDto> converter(List<Topico> topico){

@@ -1,12 +1,14 @@
 package com.projetoforum.forum.controller.form;
 
+import org.springframework.data.mongodb.core.index.Indexed;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 public class UsuarioForm {
     @NotBlank
     private String nome;
-    @NotBlank @Email
+    @NotBlank @Email @Indexed(unique = true)
     private String email;
     @NotBlank
     private String senha;

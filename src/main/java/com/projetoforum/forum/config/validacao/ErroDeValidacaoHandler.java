@@ -2,7 +2,9 @@ package com.projetoforum.forum.config.validacao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,9 +12,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @RestControllerAdvice
 public class ErroDeValidacaoHandler {
@@ -31,5 +34,15 @@ public class ErroDeValidacaoHandler {
             dto.add(erro);
         });
         return dto;
+    }
+
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DuplicateKeyException.class)
+
+    public String handle(DuplicateKeyException exception) {
+
+        String[] erro = exception.getCause().getLocalizedMessage().split("dup key: ");
+        String mensagem = erro[1].replace('{', ' ').replace('}', ' ') + "já existe.";
+        return mensagem;
     }
 }

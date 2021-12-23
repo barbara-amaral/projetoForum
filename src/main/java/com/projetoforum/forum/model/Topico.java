@@ -3,11 +3,13 @@ package com.projetoforum.forum.model;
 import com.projetoforum.forum.controller.form.TopicoForm;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Document(collection = "Topicos")
+@Document(collection = "Topico")
 public class Topico {
 
     @Id
