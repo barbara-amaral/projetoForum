@@ -1,5 +1,6 @@
 package com.projetoforum.forum.controller.dto;
 
+import com.projetoforum.forum.model.StatusTopico;
 import com.projetoforum.forum.model.Topico;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class TopicoDto {
     private String tag;
     private String dataCriacao;
     private String autor;
+    private StatusTopico status;
 
     public TopicoDto(Topico topico) {
         this.titulo = topico.getTitulo();
@@ -18,6 +20,7 @@ public class TopicoDto {
         this.tag = topico.getTag();
         this.dataCriacao = topico.getDataCriacao();
         this.autor = topico.getAutor().getNome();
+        this.status = topico.getStatus();
     }
 
     public String getTitulo() {
@@ -38,6 +41,10 @@ public class TopicoDto {
 
     public String getAutor() {
         return autor;
+    }
+
+    public StatusTopico getStatus() {
+        return status;
     }
 
     public static List<TopicoDto> converter(List<Topico> topico){
