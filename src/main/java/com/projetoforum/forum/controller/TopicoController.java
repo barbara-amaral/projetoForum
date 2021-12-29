@@ -19,6 +19,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/topicos")
@@ -51,6 +53,31 @@ public class TopicoController {
 
         URI uri = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
         return ResponseEntity.created(uri).body(new TopicoDto(topico));
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> deletar(@PathVariable(value = "id") String id, HttpServletRequest httpServletRequest){
+
+        Optional<Topico> topico = topicoService.findById(id);
+
+        if (topico.isEmpty()){
+            throw new NoSuchElementException("Tópico não encontrado");
+        }
+
+        Usuario autor = topico.get().getAutor();
+        String token = recuperarToken(httpServletRequest);
+        String idUsuario = tokenService.getIdUsuario(token);
+        Usuario usuarioLogado= usuarioService.findById(idUsuario).get();
+
+
+        if(topico.isPresent() && usuarioLogado.equals(autor)){
+            topicoService.deleteById(id);
+            return ResponseEntity.ok("Tópico deletado com sucesso.");
+        }else if (usuarioLogado != autor){
+            return ResponseEntity.badRequest().body("Você não tem permissão para deletar esse tópico");
+        }
+            return ResponseEntity.notFound().build();
     }
 
     private String recuperarToken(HttpServletRequest httpServletRequest){
