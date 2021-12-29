@@ -1,4 +1,4 @@
-package com.projetoforum.forum.service;
+package com.projetoforum.forum.config.security;
 
 import com.projetoforum.forum.model.Usuario;
 import io.jsonwebtoken.Claims;

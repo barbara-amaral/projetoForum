@@ -2,8 +2,7 @@ package com.projetoforum.forum.controller;
 
 import com.projetoforum.forum.controller.dto.TokenDto;
 import com.projetoforum.forum.controller.form.LoginForm;
-import com.projetoforum.forum.model.Usuario;
-import com.projetoforum.forum.service.TokenService;
+import com.projetoforum.forum.config.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

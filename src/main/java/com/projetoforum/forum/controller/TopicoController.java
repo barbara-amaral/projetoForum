@@ -3,10 +3,11 @@ package com.projetoforum.forum.controller;
 import com.projetoforum.forum.controller.dto.TopicoDto;
 import com.projetoforum.forum.controller.form.TopicoForm;
 import com.projetoforum.forum.model.Usuario;
-import com.projetoforum.forum.repository.TopicoRepository;
 import com.projetoforum.forum.model.Topico;
 import com.projetoforum.forum.repository.UsuarioRepository;
-import com.projetoforum.forum.service.TokenService;
+import com.projetoforum.forum.config.security.TokenService;
+import com.projetoforum.forum.service.TopicoService;
+import com.projetoforum.forum.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,10 +25,10 @@ import java.time.format.DateTimeFormatter;
 public class TopicoController {
 
     @Autowired
-    TopicoRepository repository;
+    TopicoService topicoService;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UsuarioService usuarioService;
 
     @Autowired
     TokenService tokenService;
@@ -42,11 +43,11 @@ public class TopicoController {
 
         String token = recuperarToken(httpServletRequest);
         String idUsuario = tokenService.getIdUsuario(token);
-        Usuario usuario= usuarioRepository.findById(idUsuario).get();
+        Usuario usuario= usuarioService.findById(idUsuario).get();
 
         topico.setAutor(usuario);
 
-        repository.save(topico);
+        topicoService.save(topico);
 
         URI uri = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
         return ResponseEntity.created(uri).body(new TopicoDto(topico));

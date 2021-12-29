@@ -1,7 +1,8 @@
-package com.projetoforum.forum.service;
+package com.projetoforum.forum.config.security;
 
 import com.projetoforum.forum.model.Usuario;
 import com.projetoforum.forum.repository.UsuarioRepository;
+import com.projetoforum.forum.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,11 +16,11 @@ import java.util.Optional;
 public class AutenticacaoService implements UserDetailsService {
 
     @Autowired
-    private UsuarioRepository repository;
+    private UsuarioService usuarioService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = repository.findUsuarioByEmail(username);
+        Usuario usuario = usuarioService.findUsuarioByEmail(username);
         if(usuario!=null) {
             return usuario;
         }
