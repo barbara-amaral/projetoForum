@@ -27,4 +27,9 @@ public class TopicoServiceImpl implements TopicoService{
     public void deleteById(String id) {
         topicoRepository.deleteById(id);
     }
+
+    @Override
+    public Topico getById(String id) {
+        return topicoRepository.getById(id);
+    }
 }

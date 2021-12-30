@@ -1,6 +1,7 @@
 package com.projetoforum.forum.controller;
 
 import com.projetoforum.forum.controller.dto.TopicoDto;
+import com.projetoforum.forum.controller.form.AtualizacaoTopicoForm;
 import com.projetoforum.forum.controller.form.TopicoForm;
 import com.projetoforum.forum.model.Usuario;
 import com.projetoforum.forum.model.Topico;
@@ -80,6 +81,33 @@ public class TopicoController {
             return ResponseEntity.notFound().build();
     }
 
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> atualizar(@PathVariable(value = "id") String id, @RequestBody @Valid AtualizacaoTopicoForm form, HttpServletRequest httpServletRequest){
+        Optional<Topico> optionalTopico = topicoService.findById(id);
+
+        if (optionalTopico.isEmpty()){
+            throw new NoSuchElementException("Tópico não encontrado");
+        }
+
+        Usuario autor = optionalTopico.get().getAutor();
+        String token = recuperarToken(httpServletRequest);
+        String idUsuario = tokenService.getIdUsuario(token);
+        Usuario usuarioLogado= usuarioService.findById(idUsuario).get();
+
+
+        if(optionalTopico.isPresent() && usuarioLogado.equals(autor)){
+            Topico topico = form.atualizar(id, topicoService);
+            return ResponseEntity.ok(new TopicoDto(topico));
+        }else if (usuarioLogado != autor){
+            return ResponseEntity.badRequest().body("Você não tem permissão para atualizar esse tópico");
+        }
+        return ResponseEntity.notFound().build();
+
+    }
+
+
+
     private String recuperarToken(HttpServletRequest httpServletRequest){
         String token = httpServletRequest.getHeader("Authorization");
         if(token==null || token.isEmpty() || !token.startsWith("Bearer ")){
@@ -87,5 +115,4 @@ public class TopicoController {
         }
         return token.substring(7, token.length());
     }
-
 }

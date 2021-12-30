@@ -10,4 +10,5 @@ public interface TopicoService {
     Topico save(Topico topico);
     Optional<Topico> findById(String id);
     void deleteById(String id);
+    Topico getById(String id);
 }
