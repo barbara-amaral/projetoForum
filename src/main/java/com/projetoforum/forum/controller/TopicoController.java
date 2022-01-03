@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -106,7 +107,17 @@ public class TopicoController {
 
     }
 
-
+    @GetMapping("/listar")
+    @Transactional
+    public List<TopicoDto> listar(@RequestParam(required = false) String tag){
+        if (tag == null){
+            List<Topico> topicos = topicoService.findAll();
+            return TopicoDto.converter(topicos);
+        }else {
+            List<Topico> topicos = topicoService.findTopicoByTag(tag);
+            return TopicoDto.converter(topicos);
+        }
+    }
 
     private String recuperarToken(HttpServletRequest httpServletRequest){
         String token = httpServletRequest.getHeader("Authorization");
