@@ -10,4 +10,6 @@ public interface UsuarioService {
     Usuario findUsuarioByEmail(String email);
     Optional<Usuario> findById(String idUsuario);
     Usuario save(Usuario usuario);
+    void deleteUsuarioByEmail(String email);
+    Optional<Usuario> findByEmail(String email);
 }
