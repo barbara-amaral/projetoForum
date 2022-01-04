@@ -10,6 +10,7 @@ import com.projetoforum.forum.config.security.TokenService;
 import com.projetoforum.forum.service.TopicoService;
 import com.projetoforum.forum.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -109,13 +110,16 @@ public class TopicoController {
 
     @GetMapping("/listar")
     @Transactional
-    public List<TopicoDto> listar(@RequestParam(required = false) String tag){
+    public ResponseEntity<?> listar(@RequestParam(required = false) String tag){
         if (tag == null){
             List<Topico> topicos = topicoService.findAll();
-            return TopicoDto.converter(topicos);
+            return ResponseEntity.ok(TopicoDto.converter(topicos));
         }else {
             List<Topico> topicos = topicoService.findTopicoByTag(tag);
-            return TopicoDto.converter(topicos);
+            if(topicos.isEmpty()){
+                return new ResponseEntity<>("Não existem tópicos cadastrados com a tag " + tag + ".",HttpStatus.NOT_FOUND);
+            }
+            return ResponseEntity.ok(TopicoDto.converter(topicos));
         }
     }
 
