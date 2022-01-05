@@ -3,10 +3,8 @@ package com.projetoforum.forum.controller;
 
 import com.projetoforum.forum.config.security.TokenService;
 import com.projetoforum.forum.controller.dto.UsuarioDto;
-import com.projetoforum.forum.controller.form.AtualizacaoUsuarioForm;
-import com.projetoforum.forum.controller.form.UsuarioForm;
+import com.projetoforum.forum.controller.form.*;
 import com.projetoforum.forum.model.Usuario;
-import com.projetoforum.forum.repository.UsuarioRepository;
 import com.projetoforum.forum.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/cadastro")
@@ -46,64 +42,88 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(new UsuarioDto(usuario));
     }
 
-    @DeleteMapping("/deletar/{email}")
-    public ResponseEntity<?> deletar(@PathVariable(value = "email") String email, HttpServletRequest httpServletRequest){
-        Optional<Usuario> usuario = usuarioService.findByEmail(email);
-
-        if(usuario.isEmpty()){
-            throw new NoSuchElementException("Usuário não encontrado.");
-        }
-
-        String emailUsuario = usuario.get().getEmail();
+    @DeleteMapping("/deletar")
+    public ResponseEntity<?> deletar(@RequestBody @Valid DeletarUsuarioForm form, HttpServletRequest httpServletRequest){
 
         String token = recuperarToken(httpServletRequest);
         String idUsuario = tokenService.getIdUsuario(token);
-        String usuarioLogado= usuarioService.findById(idUsuario).get().getEmail();
+        String emailUsuario= usuarioService.findById(idUsuario).get().getEmail();
 
-        if(emailUsuario != null && usuarioLogado.matches(emailUsuario)){
-            usuarioService.deleteUsuarioByEmail(email);
-            return ResponseEntity.ok("Usuário deletado com sucesso.");
-        }else if (!usuarioLogado.matches(emailUsuario)){
-            return ResponseEntity.badRequest().body("Você não tem permissão para deletar esse usuário.");
+        ResponseEntity<?> deletar = form.deletar(emailUsuario, usuarioService);
+
+        if(deletar.getStatusCode() == HttpStatus.BAD_REQUEST){
+            return new ResponseEntity<>("Dados inválidos.",HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.notFound().build();
+
+        usuarioService.deleteUsuarioByEmail(emailUsuario);
+        return ResponseEntity.ok("Usuário deletado com sucesso.");
+
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<?> listar(){
+    public ResponseEntity<?> listar(@RequestParam(required = false) String email){
 
+        if(email == null){
             List<Usuario> usuarios = usuarioService.findAll();
             return ResponseEntity.ok(UsuarioDto.converter(usuarios));
+        }else {
+            Usuario usuario = usuarioService.findUsuarioByEmail(email);
+            if (usuario == null){
+                return new ResponseEntity<>("Usuário não encontrado.",HttpStatus.NOT_FOUND);
+            }
+            return ResponseEntity.ok(new UsuarioDto(usuario));
 
+        }
     }
 
-   @PutMapping("atualizar/{email}")
-   public ResponseEntity<?> atualizarEmail(@PathVariable(value = "email") String email, @RequestBody @Valid AtualizacaoUsuarioForm form, HttpServletRequest httpServletRequest){
-        Optional<Usuario> optionalUsuario = usuarioService.findByEmail(email);
-        if(optionalUsuario.isEmpty()){
-            throw new NoSuchElementException("Usuário não encontrado.");
-        }
-       String emailUsuario = optionalUsuario.get().getEmail();
+   @PutMapping("atualizarEmail")
+   public Object atualizarEmail(@RequestBody @Valid AtualizacaoUsuarioEmailForm form, AtualizacaoUsuarioNomeForm nomeForm, HttpServletRequest httpServletRequest){
 
        String token = recuperarToken(httpServletRequest);
        String idUsuario = tokenService.getIdUsuario(token);
-       String usuarioLogado= usuarioService.findById(idUsuario).get().getEmail();
+       String emailUsuario= usuarioService.findById(idUsuario).get().getEmail();
 
-       if(emailUsuario != null && usuarioLogado.matches(emailUsuario)){
-           ResponseEntity<?> atualizar = form.atualizar(emailUsuario, usuarioService);
-           if(atualizar.getStatusCode() == HttpStatus.OK){
-               Usuario usuario = (Usuario) atualizar.getBody();
-               return ResponseEntity.ok(new UsuarioDto(usuario));
-           }else if(atualizar.getStatusCode() == HttpStatus.BAD_REQUEST){
-               return ResponseEntity.badRequest().body("E-mail deve ser diferente do anterior.");
-           }
+       ResponseEntity<?> atualizar = form.atualizar(emailUsuario, usuarioService);
 
+            if(atualizar.getStatusCode() == HttpStatus.BAD_REQUEST){
+                return ResponseEntity.badRequest().body("E-mail deve ser diferente do anterior.");
+            }
 
-      }else if (!usuarioLogado.matches(emailUsuario)){
-          return ResponseEntity.badRequest().body("Você não tem permissão para atualizar esse usuário.");
-      }
-       return ResponseEntity.notFound().build();
+            return ResponseEntity.ok("E-mail atualizado com sucesso.");
    }
+
+   @PutMapping("/atualizarNome")
+   public ResponseEntity<?> atualizarNome(@RequestBody @Valid AtualizacaoUsuarioNomeForm form, HttpServletRequest httpServletRequest){
+
+       String token = recuperarToken(httpServletRequest);
+       String idUsuario = tokenService.getIdUsuario(token);
+       String emailUsuario= usuarioService.findById(idUsuario).get().getEmail();
+
+       ResponseEntity<?> atualizar = form.atualizar(emailUsuario, usuarioService);
+
+       if(atualizar.getStatusCode() == HttpStatus.BAD_REQUEST){
+           return ResponseEntity.badRequest().body("Nome deve ser diferente do anterior.");
+       }
+
+       return ResponseEntity.ok("Nome atualizado com sucesso.");
+   }
+
+    @PutMapping("/atualizarSenha")
+    public ResponseEntity<?> atualizarSenha(@RequestBody @Valid AtualizacaoSenhaForm form, HttpServletRequest httpServletRequest){
+
+        String token = recuperarToken(httpServletRequest);
+        String idUsuario = tokenService.getIdUsuario(token);
+        String emailUsuario= usuarioService.findById(idUsuario).get().getEmail();
+
+        ResponseEntity<?> atualizar = form.atualizar(emailUsuario, usuarioService);
+
+        if(atualizar.getStatusCode() == HttpStatus.BAD_REQUEST){
+            return ResponseEntity.badRequest().body("Senha deve ser diferente da anterior.");
+        }
+
+        return ResponseEntity.ok("Senha atualizada com sucesso.");
+
+    }
 
     private String recuperarToken(HttpServletRequest httpServletRequest){
         String token = httpServletRequest.getHeader("Authorization");

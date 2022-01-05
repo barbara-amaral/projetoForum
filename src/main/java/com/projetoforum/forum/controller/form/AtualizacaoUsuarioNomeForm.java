@@ -6,26 +6,26 @@ import org.springframework.http.ResponseEntity;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
-public class AtualizacaoUsuarioForm {
+public class AtualizacaoUsuarioNomeForm {
 
     @NotBlank
-    @Email
-    private String novoEmail;
+    private String novoNome;
 
-    public String getNovoEmail() {
-        return novoEmail;
+    public String getNovoNome() {
+        return novoNome;
     }
 
-    public void setNovoEmail(String novoEmail) {
-        this.novoEmail = novoEmail;
+    public void setNovoNome(String novoNome) {
+        this.novoNome = novoNome;
     }
 
     public ResponseEntity<?> atualizar(String emailUsuario, UsuarioService usuarioService){
         Usuario usuario = usuarioService.findUsuarioByEmail(emailUsuario);
-        if(!novoEmail.matches(emailUsuario)){
-            usuario.setEmail(this.novoEmail);
+        String usuarioNome = usuario.getNome();
+
+        if(!novoNome.matches(usuarioNome)){
+            usuario.setNome(novoNome);
             usuarioService.save(usuario);
             return ResponseEntity.ok().body(usuario);
         }else

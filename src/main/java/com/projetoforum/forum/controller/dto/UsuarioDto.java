@@ -16,6 +16,7 @@ public class UsuarioDto {
         this.email = usuario.getEmail();
     }
 
+
     public String getNome() {
         return nome;
     }
