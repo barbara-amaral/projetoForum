@@ -24,8 +24,7 @@ public class Usuario implements UserDetails {
     public Usuario(UsuarioForm usuarioForm) {
         this.nome = usuarioForm.getNome();
         this.email = usuarioForm.getEmail();
-        this.senha = usuarioForm.getSenha();
-        this.perfis = usuarioForm.getPerfis();
+        this.senha = usuarioForm.getSenha();;
     }
 
     public String getId() {

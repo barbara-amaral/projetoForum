@@ -15,7 +15,6 @@ public class UsuarioForm {
     private String email;
     @NotBlank
     private String senha;
-    private List<Perfil> perfis = new ArrayList<>();
 
     public String getNome() {
         return nome;
@@ -41,12 +40,4 @@ public class UsuarioForm {
         this.senha = senha;
     }
 
-    public List<Perfil> getPerfis() {
-        return perfis;
-    }
-
-    public List<Perfil> setPerfis(Perfil perfil) {
-        this.perfis = perfis;
-        return perfis;
-    }
 }

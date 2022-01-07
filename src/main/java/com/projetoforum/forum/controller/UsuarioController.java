@@ -44,7 +44,6 @@ public class UsuarioController {
 
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
-        usuario.setPerfis(form.setPerfis(perfil));
         usuario.addPerfil(perfil);
 
         usuarioService.save(usuario);
