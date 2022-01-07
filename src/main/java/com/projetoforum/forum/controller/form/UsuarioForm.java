@@ -1,9 +1,12 @@
 package com.projetoforum.forum.controller.form;
 
+import com.projetoforum.forum.model.Perfil;
 import org.springframework.data.mongodb.core.index.Indexed;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioForm {
     @NotBlank
@@ -12,6 +15,7 @@ public class UsuarioForm {
     private String email;
     @NotBlank
     private String senha;
+    private List<Perfil> perfis = new ArrayList<>();
 
     public String getNome() {
         return nome;
@@ -37,4 +41,12 @@ public class UsuarioForm {
         this.senha = senha;
     }
 
+    public List<Perfil> getPerfis() {
+        return perfis;
+    }
+
+    public List<Perfil> setPerfis(Perfil perfil) {
+        this.perfis = perfis;
+        return perfis;
+    }
 }

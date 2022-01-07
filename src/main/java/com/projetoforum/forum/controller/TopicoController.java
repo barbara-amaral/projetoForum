@@ -9,6 +9,8 @@ import com.projetoforum.forum.repository.UsuarioRepository;
 import com.projetoforum.forum.config.security.TokenService;
 import com.projetoforum.forum.service.TopicoService;
 import com.projetoforum.forum.service.UsuarioService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +40,8 @@ public class TopicoController {
     @Autowired
     TokenService tokenService;
 
+    private static final Logger log = LoggerFactory.getLogger(TopicoController.class);
+
     @PostMapping("novotopico")
     @Transactional
     public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, HttpServletRequest httpServletRequest, UriComponentsBuilder uriComponentsBuilder){
@@ -51,7 +55,7 @@ public class TopicoController {
         Usuario usuario= usuarioService.findById(idUsuario).get();
 
         topico.setAutor(usuario);
-
+        log.info("Tópico cadastrado.");
         topicoService.save(topico);
 
         URI uri = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
@@ -76,6 +80,7 @@ public class TopicoController {
 
         if(topico.isPresent() && usuarioLogado.equals(autor)){
             topicoService.deleteById(id);
+            log.info("Tópico deletado.");
             return ResponseEntity.ok("Tópico deletado com sucesso.");
         }else if (usuarioLogado != autor){
             return ResponseEntity.badRequest().body("Você não tem permissão para deletar esse tópico");
@@ -100,6 +105,7 @@ public class TopicoController {
 
         if(optionalTopico.isPresent() && usuarioLogado.equals(autor)){
             Topico topico = form.atualizar(id, topicoService);
+            log.info("Tópico atualizado.");
             return ResponseEntity.ok(new TopicoDto(topico));
         }else if (usuarioLogado != autor){
             return ResponseEntity.badRequest().body("Você não tem permissão para atualizar esse tópico");

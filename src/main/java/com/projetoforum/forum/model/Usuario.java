@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Document(collection = "Usuario")
 public class Usuario implements UserDetails {
@@ -15,7 +16,7 @@ public class Usuario implements UserDetails {
     private String nome;
     private String email;
     private String senha;
-    private Collection<Perfil> perfis = new ArrayList<>();
+    private List<Perfil> perfis = new ArrayList<>();
 
     public Usuario() {
     }
@@ -24,6 +25,7 @@ public class Usuario implements UserDetails {
         this.nome = usuarioForm.getNome();
         this.email = usuarioForm.getEmail();
         this.senha = usuarioForm.getSenha();
+        this.perfis = usuarioForm.getPerfis();
     }
 
     public String getId() {
@@ -56,6 +58,18 @@ public class Usuario implements UserDetails {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public List<Perfil> getPerfis() {
+        return perfis;
+    }
+
+    public void setPerfis(List<Perfil> perfis) {
+        this.perfis = perfis;
+    }
+
+    public void addPerfil(Perfil perfil){
+        perfis.add(perfil);
     }
 
     @Override
