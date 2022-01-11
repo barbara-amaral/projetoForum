@@ -1,11 +1,11 @@
-package com.projetoforum.forum.controller.form;
+package com.projetoforum.forum.controller.dto;
 
 import com.projetoforum.forum.model.Topico;
 import com.projetoforum.forum.service.TopicoService;
 
 import javax.validation.constraints.NotBlank;
 
-public class AtualizacaoTopicoForm {
+public class AtualizacaoTopicoDto {
 
     @NotBlank
     private String mensagem;

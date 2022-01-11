@@ -1,8 +1,8 @@
-package com.projetoforum.forum.controller.form;
+package com.projetoforum.forum.controller.dto;
 
 import javax.validation.constraints.NotBlank;
 
-public class TopicoForm {
+public class CadastroTopicoDto {
     @NotBlank
     private String titulo;
     @NotBlank

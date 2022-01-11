@@ -2,8 +2,7 @@ package com.projetoforum.forum.controller;
 
 
 import com.projetoforum.forum.config.security.TokenService;
-import com.projetoforum.forum.controller.dto.UsuarioDto;
-import com.projetoforum.forum.controller.form.*;
+import com.projetoforum.forum.controller.dto.*;
 import com.projetoforum.forum.model.Perfil;
 import com.projetoforum.forum.model.Usuario;
 import com.projetoforum.forum.service.UsuarioService;

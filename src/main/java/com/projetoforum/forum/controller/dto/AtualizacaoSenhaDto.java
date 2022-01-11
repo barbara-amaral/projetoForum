@@ -1,4 +1,4 @@
-package com.projetoforum.forum.controller.form;
+package com.projetoforum.forum.controller.dto;
 
 import com.projetoforum.forum.controller.UsuarioController;
 import com.projetoforum.forum.model.Usuario;

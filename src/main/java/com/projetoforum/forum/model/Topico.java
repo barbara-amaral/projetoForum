@@ -1,10 +1,9 @@
 package com.projetoforum.forum.model;
 
-import com.projetoforum.forum.controller.form.TopicoForm;
+import com.projetoforum.forum.controller.dto.CadastroTopicoDto;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,7 +25,7 @@ public class Topico {
     public Topico() {
     }
 
-    public Topico(TopicoForm form) {
+    public Topico(CadastroTopicoDto form) {
         this.titulo = form.getTitulo();
         this.mensagem = form.getMensagem();
         this.tag = form.getTag();

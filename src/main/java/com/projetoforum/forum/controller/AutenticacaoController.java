@@ -1,8 +1,10 @@
 package com.projetoforum.forum.controller;
 
 import com.projetoforum.forum.controller.dto.TokenDto;
-import com.projetoforum.forum.controller.form.LoginForm;
+import com.projetoforum.forum.controller.dto.LoginDto;
 import com.projetoforum.forum.config.security.TokenService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,17 +28,21 @@ public class AutenticacaoController {
     @Autowired
     private TokenService tokenService;
 
+    private static final Logger log = LoggerFactory.getLogger(AutenticacaoController.class);
+
     @PostMapping
-    public ResponseEntity<?> autenticar(@RequestBody @Valid LoginForm form){
+    public ResponseEntity<?> autenticar(@RequestBody @Valid LoginDto loginDto){
 
-
-
-        UsernamePasswordAuthenticationToken dadosLogin = form.converter();
+        UsernamePasswordAuthenticationToken dadosLogin = loginDto.converter();
         try{
+            log.info("Preparando para autenticar usuário...");
             Authentication authentication = authenticationManager.authenticate(dadosLogin);
+            log.info("Gerando token...");
             String token = tokenService.gerarToken(authentication);
+            log.info("Token gerado.");
             return ResponseEntity.ok(new TokenDto(token, "Bearer"));
         }catch (AuthenticationException e){
+            log.info("Ocorreu um erro: os dados informados estão incorretos.");
             return ResponseEntity.badRequest().body("Dados inválidos.");
         }
 

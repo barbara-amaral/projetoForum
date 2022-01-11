@@ -1,4 +1,4 @@
-package com.projetoforum.forum.controller.form;
+package com.projetoforum.forum.controller.dto;
 
 import com.projetoforum.forum.model.Perfil;
 import org.springframework.data.mongodb.core.index.Indexed;

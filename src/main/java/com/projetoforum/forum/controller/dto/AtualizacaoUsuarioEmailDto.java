@@ -1,4 +1,4 @@
-package com.projetoforum.forum.controller.form;
+package com.projetoforum.forum.controller.dto;
 
 import com.projetoforum.forum.controller.UsuarioController;
 import com.projetoforum.forum.model.Usuario;
@@ -9,35 +9,34 @@ import org.springframework.http.ResponseEntity;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
-public class AtualizacaoUsuarioNomeDto {
+public class AtualizacaoUsuarioEmailDto {
 
     @NotBlank
-    private String novoNome;
+    @Email
+    private String novoEmail;
 
     private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
-    public String getNovoNome() {
-        return novoNome;
+    public String getNovoEmail() {
+        return novoEmail;
     }
 
-    public void setNovoNome(String novoNome) {
-        this.novoNome = novoNome;
+    public void setNovoEmail(String novoEmail) {
+        this.novoEmail = novoEmail;
     }
 
     public ResponseEntity<?> atualizar(String emailUsuario, UsuarioService usuarioService){
         Usuario usuario = usuarioService.findUsuarioByEmail(emailUsuario);
-        String usuarioNome = usuario.getNome();
-
-        log.info("Verificando nome informado...");
-
-        if(!novoNome.matches(usuarioNome)){
-            usuario.setNome(novoNome);
+        log.info("Verificando e-mail informado...");
+        if(!novoEmail.matches(emailUsuario)){
+            usuario.setEmail(this.novoEmail);
+            log.info("Novo e-mail salvo na base de dados.");
             usuarioService.save(usuario);
-            log.info("Nome salvo na base de dados.");
             return ResponseEntity.ok().body(usuario);
         }else
-            log.info("Ocorreu um erro: Nome não pode ser o mesmo.");
+            log.info("Ocorreu um erro: E-mail não pode ser o mesmo.");
             return ResponseEntity.badRequest().build();
     }
 }

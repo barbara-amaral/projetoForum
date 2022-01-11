@@ -1,11 +1,10 @@
 package com.projetoforum.forum.controller;
 
 import com.projetoforum.forum.controller.dto.TopicoDto;
-import com.projetoforum.forum.controller.form.AtualizacaoTopicoForm;
-import com.projetoforum.forum.controller.form.TopicoForm;
+import com.projetoforum.forum.controller.dto.AtualizacaoTopicoDto;
+import com.projetoforum.forum.controller.dto.CadastroTopicoDto;
 import com.projetoforum.forum.model.Usuario;
 import com.projetoforum.forum.model.Topico;
-import com.projetoforum.forum.repository.UsuarioRepository;
 import com.projetoforum.forum.config.security.TokenService;
 import com.projetoforum.forum.service.TopicoService;
 import com.projetoforum.forum.service.UsuarioService;
@@ -44,20 +43,20 @@ public class TopicoController {
 
     @PostMapping("novotopico")
     @Transactional
-    public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, HttpServletRequest httpServletRequest, UriComponentsBuilder uriComponentsBuilder){
-        Topico topico = new Topico(form);
-
+    public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid CadastroTopicoDto cadastroTopicoDto, HttpServletRequest httpServletRequest, UriComponentsBuilder uriComponentsBuilder){
+        Topico topico = new Topico(cadastroTopicoDto);
+        log.info("Gerando novo tópico...");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm");
         topico.setDataCriacao(LocalDateTime.now().format(formatter));
-
+        log.info("Pegando informações de data e hora...");
         String token = recuperarToken(httpServletRequest);
         String idUsuario = tokenService.getIdUsuario(token);
         Usuario usuario= usuarioService.findById(idUsuario).get();
-
+        log.info("Recuperando usuário através do token...");
         topico.setAutor(usuario);
-        log.info("Tópico cadastrado.");
         topicoService.save(topico);
-
+        log.info("Tópico salvo na base de dados.");
+        log.info("Tópico cadastrado.");
         URI uri = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
         return ResponseEntity.created(uri).body(new TopicoDto(topico));
     }
@@ -67,22 +66,27 @@ public class TopicoController {
     public ResponseEntity<?> deletar(@PathVariable(value = "id") String id, HttpServletRequest httpServletRequest){
 
         Optional<Topico> topico = topicoService.findById(id);
+        log.info("Buscando tópico através do Id...");
 
         if (topico.isEmpty()){
+            log.info("Tópico não foi encontrado na base de dados.");
             throw new NoSuchElementException("Tópico não encontrado");
         }
 
         Usuario autor = topico.get().getAutor();
+        log.info("Identificando autor do tópico...");
         String token = recuperarToken(httpServletRequest);
         String idUsuario = tokenService.getIdUsuario(token);
         Usuario usuarioLogado= usuarioService.findById(idUsuario).get();
-
-
+        log.info("Recuperando usuário através do token...");
+        log.info("Verificando usuário...");
         if(topico.isPresent() && usuarioLogado.equals(autor)){
             topicoService.deleteById(id);
             log.info("Tópico deletado.");
             return ResponseEntity.ok("Tópico deletado com sucesso.");
         }else if (usuarioLogado != autor){
+            log.info("Houve um erro: Usuário não tem permissão para deletar esse tópico.");
+            log.info("Não foi possível prosseguir com a operação.");
             return ResponseEntity.badRequest().body("Você não tem permissão para deletar esse tópico");
         }
             return ResponseEntity.notFound().build();
@@ -90,10 +94,11 @@ public class TopicoController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> atualizar(@PathVariable(value = "id") String id, @RequestBody @Valid AtualizacaoTopicoForm form, HttpServletRequest httpServletRequest){
+    public ResponseEntity<?> atualizar(@PathVariable(value = "id") String id, @RequestBody @Valid AtualizacaoTopicoDto atualizacaoTopicoDto, HttpServletRequest httpServletRequest){
         Optional<Topico> optionalTopico = topicoService.findById(id);
-
+        log.info("Buscando tópico através do Id...");
         if (optionalTopico.isEmpty()){
+            log.info("Tópico não foi encontrado na base de dados.");
             throw new NoSuchElementException("Tópico não encontrado");
         }
 
@@ -101,13 +106,16 @@ public class TopicoController {
         String token = recuperarToken(httpServletRequest);
         String idUsuario = tokenService.getIdUsuario(token);
         Usuario usuarioLogado= usuarioService.findById(idUsuario).get();
-
+        log.info("Recuperando usuário através do token...");
+        log.info("Verificando usuário...");
 
         if(optionalTopico.isPresent() && usuarioLogado.equals(autor)){
-            Topico topico = form.atualizar(id, topicoService);
+            Topico topico = atualizacaoTopicoDto.atualizar(id, topicoService);
             log.info("Tópico atualizado.");
             return ResponseEntity.ok(new TopicoDto(topico));
         }else if (usuarioLogado != autor){
+            log.info("Houve um erro: Usuário não tem permissão para deletar esse tópico.");
+            log.info("Não foi possível prosseguir com a operação.");
             return ResponseEntity.badRequest().body("Você não tem permissão para atualizar esse tópico");
         }
         return ResponseEntity.notFound().build();
@@ -118,11 +126,15 @@ public class TopicoController {
     @Transactional
     public ResponseEntity<?> listar(@RequestParam(required = false) String tag){
         if (tag == null){
+            log.info("Tag não informada: Retornando todos os tópicos.");
             List<Topico> topicos = topicoService.findAll();
             return ResponseEntity.ok(TopicoDto.converter(topicos));
         }else {
+            log.info("Buscando tópicos com a tag informada...");
             List<Topico> topicos = topicoService.findTopicoByTag(tag);
+            log.info("Retornando tópicos.");
             if(topicos.isEmpty()){
+                log.info("Houve um erro: Não existem tópicos com a tag informada.");
                 return new ResponseEntity<>("Não existem tópicos cadastrados com a tag " + tag + ".",HttpStatus.NOT_FOUND);
             }
             return ResponseEntity.ok(TopicoDto.converter(topicos));

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 @Service
 public class TokenService {
@@ -27,8 +28,6 @@ public class TokenService {
         Usuario logado = (Usuario) authentication.getPrincipal();
         Date hoje = new Date();
         Date dataExp = new Date(hoje.getTime() + Long.parseLong(expiration));
-
-        log.info("Token gerado.");
 
         return Jwts.builder()
                 .setIssuer("Projeto Forum")
@@ -54,8 +53,8 @@ public class TokenService {
     public String getIdUsuario(String token) {
 
         log.info("Recuperando Id do usuário...");
-
         Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
         return claims.getSubject();
+
     }
 }
