@@ -1,13 +1,12 @@
 package com.projetoforum.forum.model;
 
-import com.projetoforum.forum.controller.form.UsuarioForm;
+import com.projetoforum.forum.controller.form.CadastroUsuarioDto;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Document(collection = "Usuario")
 public class Usuario implements UserDetails {
@@ -21,10 +20,10 @@ public class Usuario implements UserDetails {
     public Usuario() {
     }
 
-    public Usuario(UsuarioForm usuarioForm) {
-        this.nome = usuarioForm.getNome();
-        this.email = usuarioForm.getEmail();
-        this.senha = usuarioForm.getSenha();;
+    public Usuario(CadastroUsuarioDto cadastroUsuarioDto) {
+        this.nome = cadastroUsuarioDto.getNome();
+        this.email = cadastroUsuarioDto.getEmail();
+        this.senha = cadastroUsuarioDto.getSenha();;
     }
 
     public String getId() {

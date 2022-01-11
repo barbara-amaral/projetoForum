@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioForm {
+public class CadastroUsuarioDto {
     @NotBlank
     private String nome;
     @NotBlank @Email @Indexed(unique = true)

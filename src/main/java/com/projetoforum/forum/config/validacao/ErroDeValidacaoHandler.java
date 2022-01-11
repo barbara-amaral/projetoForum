@@ -1,5 +1,8 @@
 package com.projetoforum.forum.config.validacao;
 
+import com.projetoforum.forum.controller.UsuarioController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -20,9 +23,13 @@ public class ErroDeValidacaoHandler {
     private MessageSource messageSource;
     private NoSuchElementException exception;
 
+    private static final Logger log = LoggerFactory.getLogger(ErroDeValidacaoHandler.class);
+
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public List<ErroDeFormularioDto> handle(MethodArgumentNotValidException exception){
+
+        log.info("Houve um erro na validação dos dados: Verifique se os dados estão preenchidos corretamente.");
 
         List<ErroDeFormularioDto> dto = new ArrayList<>();
         List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
@@ -39,6 +46,8 @@ public class ErroDeValidacaoHandler {
 
     public String handle(DuplicateKeyException exception) {
 
+        log.info("Houve um erro na validação dos dados: Verifique se não há dados duplicados.");
+
         String[] erro = exception.getCause().getLocalizedMessage().split("dup key: ");
         String mensagem = erro[1].replace('{', ' ').replace('}', ' ') + "já existe.";
         return mensagem;
@@ -47,6 +56,9 @@ public class ErroDeValidacaoHandler {
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoSuchElementException.class)
     public String handle(NoSuchElementException exception){
+
+        log.info("Houve um erro na validação dos dados: Verifique se os dados existem na base de dados.");
+
         String mensagem = exception.getMessage();
         return mensagem;
 }

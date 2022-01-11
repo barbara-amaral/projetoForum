@@ -1,7 +1,10 @@
 package com.projetoforum.forum.controller.form;
 
+import com.projetoforum.forum.controller.UsuarioController;
 import com.projetoforum.forum.model.Usuario;
 import com.projetoforum.forum.service.UsuarioService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,10 +12,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public class DeletarUsuarioForm {
+public class DeletarUsuarioDto {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
     @NotBlank
     @Email
@@ -42,12 +47,18 @@ public class DeletarUsuarioForm {
         String usuarioEmail = usuario.getEmail();
         String usuarioSenha = usuario.getSenha();
 
+        log.info("Email e senha do usuário recuperados a partir da base de dados.");
+
         String senha = this.getSenha();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+        log.info("Verificando email e senha informados...");
+
         if(email.matches(usuarioEmail) && passwordEncoder.matches(senha,usuarioSenha)){
+            log.info("Email e senha corretos.");
             return ResponseEntity.ok().build();
         }else
+            log.info("Email ou senha incorretos.");
             return ResponseEntity.badRequest().build();
     }
 }
