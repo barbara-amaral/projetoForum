@@ -55,6 +55,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/topicos/listar/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/cadastro/listar").hasAnyRole("ADMIN")
                 .antMatchers("/").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable()

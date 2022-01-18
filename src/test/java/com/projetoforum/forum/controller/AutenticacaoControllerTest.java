@@ -39,4 +39,18 @@ public class AutenticacaoControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(400));
 
     }
+
+    @Test
+    public void Autentica() throws Exception {
+
+        URI uri = new URI("/auth");
+        String json = "{\"email\":\"valeria@ibm.com\",\"senha\":\"123456\"}";
+
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .post(uri)
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().is(200));
+    }
 }

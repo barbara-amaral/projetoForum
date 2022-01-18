@@ -49,7 +49,6 @@ public class AutenticacaoTokenFilter extends OncePerRequestFilter {
     }
 
     private String recuperarToken(HttpServletRequest httpServletRequest){
-        log.info("Verificando token...");
 
         String token = httpServletRequest.getHeader("Authorization");
         if(token==null || token.isEmpty() || !token.startsWith("Bearer ")){

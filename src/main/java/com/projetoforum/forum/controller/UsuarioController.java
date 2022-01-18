@@ -6,11 +6,14 @@ import com.projetoforum.forum.controller.dto.*;
 import com.projetoforum.forum.model.Perfil;
 import com.projetoforum.forum.model.Usuario;
 import com.projetoforum.forum.service.UsuarioService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -61,7 +64,6 @@ public class UsuarioController {
 
     }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @DeleteMapping("/deletar")
     public ResponseEntity<?> deletar(@RequestBody @Valid DeletarUsuarioDto deletarUsuarioDto, HttpServletRequest httpServletRequest){
 
@@ -86,7 +88,6 @@ public class UsuarioController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/listar")
     public ResponseEntity<?> listar(@RequestParam(required = false) String email){
 
@@ -107,7 +108,6 @@ public class UsuarioController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
    @PutMapping("atualizarEmail")
    public Object atualizarEmail(@RequestBody @Valid AtualizacaoUsuarioEmailDto atualizacaoUsuarioEmailDto, AtualizacaoUsuarioNomeDto nomeForm, HttpServletRequest httpServletRequest){
 
@@ -128,7 +128,6 @@ public class UsuarioController {
             return ResponseEntity.ok("E-mail atualizado com sucesso.");
    }
 
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
    @PutMapping("/atualizarNome")
    public ResponseEntity<?> atualizarNome(@RequestBody @Valid AtualizacaoUsuarioNomeDto atualizacaoUsuarioNomeDto, HttpServletRequest httpServletRequest){
 
@@ -147,7 +146,7 @@ public class UsuarioController {
        log.info("Nome atualizado.");
        return ResponseEntity.ok("Nome atualizado com sucesso.");
    }
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+
     @PutMapping("/atualizarSenha")
     public ResponseEntity<?> atualizarSenha(@RequestBody @Valid AtualizacaoSenhaDto atualizacaoSenhaDto, HttpServletRequest httpServletRequest){
 
