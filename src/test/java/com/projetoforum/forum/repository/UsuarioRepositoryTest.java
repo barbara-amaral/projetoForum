@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @DataMongoTest(excludeAutoConfiguration = EmbeddedMongoAutoConfiguration.class)
-@ActiveProfiles("test")
 public class UsuarioRepositoryTest {
 
     @Autowired
@@ -23,7 +22,7 @@ public class UsuarioRepositoryTest {
     private MongoTemplate mongoTemplate;
 
     @Test
-    public void findUsuarioByEmail() {
+    public void encontraUsuarioPeloEmail() {
         String emailUsuario = "testando@ibm.com";
 
         Usuario usuario = new Usuario();
@@ -41,10 +40,45 @@ public class UsuarioRepositoryTest {
     }
 
     @Test
-    public void DoesNotFindUsuarioByEmail() {
-        String emailUsuario = "naoexiste@ibm.com";
+    public void naoEncontraUsuarioCasoEmailNaoExista() {
+
+        String emailUsuario = "testando@ibm.com";
+
         Usuario usuario = usuarioRepository.findUsuarioByEmail(emailUsuario);
         Assert.assertNull(usuario);
+    }
+
+    @Test
+    public void deletaUsuarioPeloEmail() {
+        String emailUsuario = "testando@ibm.com";
+
+        Usuario usuario = new Usuario();
+        usuario.setNome("Joao");
+        usuario.setEmail(emailUsuario);
+        usuario.setSenha("123");
+        mongoTemplate.save(usuario);
+
+        usuarioRepository.deleteUsuarioByEmail(emailUsuario);
+        usuario = usuarioRepository.findUsuarioByEmail(emailUsuario);
+        Assert.assertNull(usuario);
+    }
+
+    @Test
+    public void naoDeletaUsuarioPeloEmail() {
+        String emailUsuario = "testando@ibm.com";
+        String emailErrado = "naoExiste@ibm.com";
+
+        Usuario usuario = new Usuario();
+        usuario.setNome("Joao");
+        usuario.setEmail(emailUsuario);
+        usuario.setSenha("123");
+        mongoTemplate.save(usuario);
+
+        usuarioRepository.deleteUsuarioByEmail(emailErrado);
+        usuario = usuarioRepository.findUsuarioByEmail(emailUsuario);
+        Assert.assertNotNull(usuario);
+
+        mongoTemplate.remove(usuario);
     }
 
 }
