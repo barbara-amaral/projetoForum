@@ -1,5 +1,6 @@
 package com.projetoforum.forum.service;
 
+import com.projetoforum.forum.model.Resposta;
 import com.projetoforum.forum.model.Topico;
 import org.springframework.stereotype.Service;
 
@@ -14,4 +15,5 @@ public interface TopicoService {
     Topico getById(String id);
     List<Topico> findAll();
     List<Topico> findTopicoByTag(String tag);
+    Topico insert(Topico topico);
 }

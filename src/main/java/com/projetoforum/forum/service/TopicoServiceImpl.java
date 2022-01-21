@@ -1,5 +1,6 @@
 package com.projetoforum.forum.service;
 
+import com.projetoforum.forum.model.Resposta;
 import com.projetoforum.forum.model.Topico;
 import com.projetoforum.forum.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,10 @@ public class TopicoServiceImpl implements TopicoService{
     @Override
     public List<Topico> findTopicoByTag(String tag) {
         return topicoRepository.findTopicoByTag(tag);
+    }
+
+    @Override
+    public Topico insert(Topico topico) {
+        return topicoRepository.insert(topico);
     }
 }

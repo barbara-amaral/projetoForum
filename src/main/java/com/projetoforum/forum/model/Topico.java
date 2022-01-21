@@ -19,7 +19,7 @@ public class Topico {
     private String dataCriacao;
     private StatusTopico status = StatusTopico.NAO_RESPONDIDO;
     private String tag;
-    private List<Resposta> resposta = new ArrayList<>();
+    private List<Resposta> respostas = new ArrayList<>();
 
 
     public Topico() {
@@ -87,24 +87,28 @@ public class Topico {
         this.tag = tag;
     }
 
-    public List<Resposta> getResposta() {
-        return resposta;
+    public List<Resposta> getRespostas() {
+        return respostas;
     }
 
-    public void setResposta(List<Resposta> resposta) {
-        this.resposta = resposta;
+    public void setRespostas(List<Resposta> respostas) {
+        this.respostas = respostas;
     }
+
+   public void addResposta(Resposta resposta){
+        respostas.add(resposta);
+   }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Topico)) return false;
         Topico topico = (Topico) o;
-        return getId().equals(topico.getId()) && getAutor().equals(topico.getAutor()) && getTitulo().equals(topico.getTitulo()) && getMensagem().equals(topico.getMensagem()) && getDataCriacao().equals(topico.getDataCriacao()) && getStatus() == topico.getStatus() && getTag().equals(topico.getTag()) && Objects.equals(getResposta(), topico.getResposta());
+        return getId().equals(topico.getId()) && getAutor().equals(topico.getAutor()) && getTitulo().equals(topico.getTitulo()) && getMensagem().equals(topico.getMensagem()) && getDataCriacao().equals(topico.getDataCriacao()) && getStatus() == topico.getStatus() && getTag().equals(topico.getTag()) && Objects.equals(getRespostas(), topico.getRespostas());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getAutor(), getTitulo(), getMensagem(), getDataCriacao(), getStatus(), getTag(), getResposta());
+        return Objects.hash(getId(), getAutor(), getTitulo(), getMensagem(), getDataCriacao(), getStatus(), getTag(), getRespostas());
     }
 }

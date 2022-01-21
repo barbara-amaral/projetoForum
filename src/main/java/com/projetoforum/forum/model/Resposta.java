@@ -1,9 +1,9 @@
 package com.projetoforum.forum.model;
 
+import com.projetoforum.forum.controller.dto.ResponderTopicoDto;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Document(collection = "Resposta")
@@ -11,21 +11,17 @@ public class Resposta {
     @Id
     private String id;
     private String mensagem;
-    private Topico topico;
-    private LocalDateTime dataCriacao = LocalDateTime.now();
+    private String topico_id;
+    private String dataCriacao;
     private Usuario autor;
     private Boolean solucao = false;
 
     public Resposta() {
+
     }
 
-    public Resposta(String id, String mensagem, Topico topico, LocalDateTime dataCriacao, Usuario autor, Boolean solucao) {
-        this.id = id;
-        this.mensagem = mensagem;
-        this.topico = topico;
-        this.dataCriacao = dataCriacao;
-        this.autor = autor;
-        this.solucao = solucao;
+    public Resposta(ResponderTopicoDto responderTopicoDto) {
+        this.mensagem = responderTopicoDto.getMensagem();
     }
 
     public String getId() {
@@ -44,19 +40,19 @@ public class Resposta {
         this.mensagem = mensagem;
     }
 
-    public Topico getTopico() {
-        return topico;
+    public String getTopico_id() {
+        return topico_id;
     }
 
-    public void setTopico(Topico topico) {
-        this.topico = topico;
+    public void setTopico_id(String topico_id) {
+        this.topico_id = topico_id;
     }
 
-    public LocalDateTime getDataCriacao() {
+    public String getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(LocalDateTime dataCriacao) {
+    public void setDataCriacao(String dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
@@ -81,11 +77,11 @@ public class Resposta {
         if (this == o) return true;
         if (!(o instanceof Resposta)) return false;
         Resposta resposta = (Resposta) o;
-        return getId().equals(resposta.getId()) && getMensagem().equals(resposta.getMensagem()) && getTopico().equals(resposta.getTopico()) && Objects.equals(getDataCriacao(), resposta.getDataCriacao()) && getAutor().equals(resposta.getAutor()) && Objects.equals(getSolucao(), resposta.getSolucao());
+        return getId().equals(resposta.getId()) && getMensagem().equals(resposta.getMensagem()) && getTopico_id().equals(resposta.getTopico_id()) && getDataCriacao().equals(resposta.getDataCriacao()) && getAutor().equals(resposta.getAutor()) && getSolucao().equals(resposta.getSolucao());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getMensagem(), getTopico(), getDataCriacao(), getAutor(), getSolucao());
+        return Objects.hash(getId(), getMensagem(), getTopico_id(), getDataCriacao(), getAutor(), getSolucao());
     }
 }
