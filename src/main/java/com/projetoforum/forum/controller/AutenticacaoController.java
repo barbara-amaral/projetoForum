@@ -1,5 +1,6 @@
 package com.projetoforum.forum.controller;
 
+import com.projetoforum.forum.config.TestScheduledExecutorService;
 import com.projetoforum.forum.controller.dto.TokenDto;
 import com.projetoforum.forum.controller.dto.LoginDto;
 import com.projetoforum.forum.config.security.TokenService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -27,6 +29,12 @@ public class AutenticacaoController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private TestScheduledExecutorService testScheduledExecutorService;
+
+    @Autowired
+    private HttpServletRequest httpServletRequest;
 
     private static final Logger log = LoggerFactory.getLogger(AutenticacaoController.class);
 
@@ -40,6 +48,7 @@ public class AutenticacaoController {
             log.info("Gerando token...");
             String token = tokenService.gerarToken(authentication);
             log.info("Token gerado.");
+            testScheduledExecutorService.logado(token);
             return ResponseEntity.ok(new TokenDto(token, "Bearer"));
         }catch (AuthenticationException e){
             log.info("Ocorreu um erro: os dados informados estão incorretos.");

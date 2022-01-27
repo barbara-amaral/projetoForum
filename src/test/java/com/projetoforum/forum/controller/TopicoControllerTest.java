@@ -166,6 +166,7 @@ class TopicoControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(200));
 
         mongoTemplate.remove(usuario);
+        mongoTemplate.remove(topico);
     }
 
     @Test
@@ -187,14 +188,23 @@ class TopicoControllerTest {
         Authentication authentication = authenticationManager.authenticate(dadosLogin);
         String token = tokenService.gerarToken(authentication);
 
+        Usuario autor = new Usuario();
+        usuario.setNome("Teste 2");
+        usuario.setEmail("teste2@testando.com");
+        usuario.setSenha(passwordEncoder.encode("123456"));
+        Perfil perfil2 = new Perfil();
+        perfil.setNome("ROLE_USER");
+        usuario.addPerfil(perfil);
+        usuarioService.save(autor);
+
         Topico topico = new Topico();
         topico.setTitulo("Teste");
         topico.setMensagem("Testando");
         topico.setTag("teste");
-        topico.setAutor(usuarioService.findUsuarioByEmail("valeria@ibm.com"));
+        topico.setAutor(autor);
         topicoService.save(topico);
 
-        String id = "61c3d3c0eb49200a90a42bc1";
+        String id = topico.getId();
 
         mvc
                 .perform(MockMvcRequestBuilders
@@ -204,6 +214,7 @@ class TopicoControllerTest {
 
         mongoTemplate.remove(usuario);
         mongoTemplate.remove(topico);
+        mongoTemplate.remove(autor);
     }
 
     @Test

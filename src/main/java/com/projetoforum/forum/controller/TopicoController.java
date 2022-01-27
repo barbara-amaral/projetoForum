@@ -1,5 +1,6 @@
 package com.projetoforum.forum.controller;
 
+import com.projetoforum.forum.config.TestScheduledExecutorService;
 import com.projetoforum.forum.controller.dto.TopicoDto;
 import com.projetoforum.forum.controller.dto.AtualizacaoTopicoDto;
 import com.projetoforum.forum.controller.dto.CadastroTopicoDto;

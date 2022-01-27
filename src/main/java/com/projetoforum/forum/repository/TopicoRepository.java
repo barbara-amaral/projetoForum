@@ -10,4 +10,6 @@ import java.util.List;
 public interface TopicoRepository extends MongoRepository<Topico, String> {
     Topico getById(String id);
     List<Topico> findTopicoByTag(String tag);
+    List<Topico> findTopicoByAutorNome(String nome);
+    List<Topico> findAllById(String id);
 }

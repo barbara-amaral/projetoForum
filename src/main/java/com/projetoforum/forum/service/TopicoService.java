@@ -15,5 +15,6 @@ public interface TopicoService {
     Topico getById(String id);
     List<Topico> findAll();
     List<Topico> findTopicoByTag(String tag);
-    Topico insert(Topico topico);
+    List<Topico> findTopicoByAutorNome(String nome);
+    List<Topico> findAllById(String id);
 }

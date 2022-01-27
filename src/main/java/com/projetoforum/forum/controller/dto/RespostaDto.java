@@ -2,6 +2,8 @@ package com.projetoforum.forum.controller.dto;
 
 import com.projetoforum.forum.model.Resposta;
 import com.projetoforum.forum.model.Topico;
+import com.projetoforum.forum.service.TopicoService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class RespostaDto {
 
@@ -16,8 +18,6 @@ public class RespostaDto {
     private String autorResposta;
 
     private String dataResposta;
-
-
 
     public RespostaDto(Topico topico, Resposta resposta) {
 
@@ -52,4 +52,5 @@ public class RespostaDto {
     public String getDataResposta() {
         return dataResposta;
     }
+
 }

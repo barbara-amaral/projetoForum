@@ -99,6 +99,21 @@ public class Topico {
         respostas.add(resposta);
    }
 
+    public void removeResposta(){
+        int index = respostas.size() - 1;
+        respostas.remove(index);
+    }
+
+    public void removeRespostaPorId(String respostaId){
+        for (int i = 0; i< respostas.size(); i++){
+            if(respostas.get(i).getId().equals(respostaId)){
+                int index = i;
+                respostas.remove(index);
+                break;
+            }
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

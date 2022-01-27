@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
+import java.util.stream.Collector;
 
 @Document(collection = "Resposta")
 public class Resposta {
@@ -22,6 +23,9 @@ public class Resposta {
 
     public Resposta(ResponderTopicoDto responderTopicoDto) {
         this.mensagem = responderTopicoDto.getMensagem();
+    }
+
+    public Resposta(Resposta resposta) {
     }
 
     public String getId() {

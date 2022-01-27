@@ -46,7 +46,14 @@ public class TopicoServiceImpl implements TopicoService{
     }
 
     @Override
-    public Topico insert(Topico topico) {
-        return topicoRepository.insert(topico);
+    public List<Topico> findTopicoByAutorNome(String nome) {
+        return topicoRepository.findTopicoByAutorNome(nome);
     }
+
+    @Override
+    public List<Topico> findAllById(String id) {
+        return topicoRepository.findAllById(id);
+    }
+
+
 }

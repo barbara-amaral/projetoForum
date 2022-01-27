@@ -1,19 +1,13 @@
 package com.projetoforum.forum.controller.dto;
 
-import com.projetoforum.forum.controller.UsuarioController;
 import com.projetoforum.forum.model.Resposta;
 import com.projetoforum.forum.model.Topico;
-import com.projetoforum.forum.model.Usuario;
 import com.projetoforum.forum.service.RespostaService;
 import com.projetoforum.forum.service.TopicoService;
-import com.projetoforum.forum.service.UsuarioService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 
 import javax.validation.constraints.NotBlank;
 
-public class ResponderTopicoDto {
+public class AtualizacaoRespostaDto {
 
     @NotBlank
     private String mensagem;
@@ -26,4 +20,10 @@ public class ResponderTopicoDto {
         this.mensagem = mensagem;
     }
 
+    public Resposta atualizar(String id, RespostaService respostaService){
+        Resposta resposta = respostaService.getById(id);
+        resposta.setMensagem(this.mensagem);
+        respostaService.save(resposta);
+        return resposta;
+    }
 }

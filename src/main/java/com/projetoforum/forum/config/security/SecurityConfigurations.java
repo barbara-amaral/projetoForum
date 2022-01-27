@@ -53,6 +53,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/cadastro").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .antMatchers(HttpMethod.GET, "/topicos/listar/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/topico/respostas/listar/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/cadastro/listar").hasAnyRole("ADMIN")
