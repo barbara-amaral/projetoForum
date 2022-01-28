@@ -1,1 +1,1 @@
- web: java -jar C:\Users\012302631\.m2\repository\com\projetoforum\forum\0.0.1-SNAPSHOT\forum-0.0.1-SNAPSHOT.jar
+ web: java -jar projetoforum\forum\0.0.1-SNAPSHOT\forum-0.0.1-SNAPSHOT.jar
