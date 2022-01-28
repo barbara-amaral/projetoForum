@@ -1,1 +1,1 @@
-web: java -Dspring.profiles.active=default -Dserver.port=$PORT -jar forum/target/heroku/app/target/*.jar
+web: java -Dspring.profiles.active=default -Dserver.port=$PORT -jar /app/target/*.jar
