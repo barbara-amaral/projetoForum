@@ -1,1 +1,1 @@
-web: java -Dspring.profiles.active=default -Dserver.port=$PORT -jar target/forum-0.0.1-SNAPSHOT.jar
+web: java -jar target/*.jar
