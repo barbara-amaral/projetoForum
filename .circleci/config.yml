@@ -29,8 +29,6 @@ jobs:
       # Checkout the code as the first step.
       - checkout
       - browser-tools/install-browser-tools
-      - codecov/upload:
-          file: ./target/my-reports/*.xml
       # Use mvn clean and package as the standard maven build phase
       - run:
           name: Build
@@ -41,6 +39,8 @@ jobs:
           command: mvn test
       - store_artifacts:
           path:  target
+      - codecov/upload:
+          file: ./target/my-reports/*.xml
       
 
 # Invoke jobs via workflows
