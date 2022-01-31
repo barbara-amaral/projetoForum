@@ -30,7 +30,7 @@ jobs:
       - checkout
       - browser-tools/install-browser-tools
       - codecov/upload:
-          file: /*.xml
+          file: /home/circleci/project/target/my-reports/*.xml
       # Use mvn clean and package as the standard maven build phase
       - run:
           name: Build
