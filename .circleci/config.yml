@@ -22,7 +22,7 @@ jobs:
       - checkout
       - browser-tools/install-browser-tools
       - codecov/upload:
-          file: /home/circleci/project
+          file: /home/circleci/project/jacoco.xml
       # Use mvn clean and package as the standard maven build phase
       - run:
           name: Build
