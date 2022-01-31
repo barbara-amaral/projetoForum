@@ -3,6 +3,7 @@
 version: 2.1
 orbs: 
   browser-tools: circleci/browser-tools@1.2.3
+  codecov: codecov/codecov@3.2.2
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
@@ -20,6 +21,7 @@ jobs:
       # Checkout the code as the first step.
       - checkout
       - browser-tools/install-browser-tools
+      - codecov/upload
       # Use mvn clean and package as the standard maven build phase
       - run:
           name: Build
