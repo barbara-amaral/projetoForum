@@ -32,7 +32,7 @@ jobs:
       - store_artifacts:
           path:  target
       - codecov/upload:
-          file: /home/circleci/project/jacoco.xml
+          file: /home/circleci/project/
       
 
 # Invoke jobs via workflows
