@@ -46,7 +46,7 @@ jobs:
       - store_test_results:
           path: ~/test-results
       - store_artifacts:
-          path:  target
+          path: ~/test-results/junit
       - codecov/upload:
           file: ./target/my-reports/*.xml
       
