@@ -38,7 +38,7 @@ jobs:
           name: Test
           command: mvn test
       - store_test_results:
-          path: target/my-reports
+          path: target/my-reports/jacoco-resources
       - store_artifacts:
           path:  target
       - codecov/upload:
