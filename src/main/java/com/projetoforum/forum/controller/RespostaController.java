@@ -114,7 +114,7 @@ public class RespostaController {
         log.info("Verificando usuário...");
 
         if (!usuarioLogado.equals(autor)){
-            log.info("Houve um erro: Usuário não tem permissão para deletar essa resposta.");
+            log.info("Houve um erro: Usuário não tem permissão para editar essa resposta.");
             log.info("Não foi possível prosseguir com a operação.");
             return ResponseEntity.badRequest().body("Você não tem permissão para atualizar essa resposta");
         }
@@ -141,8 +141,8 @@ public class RespostaController {
         log.info("Buscando resposta através do Id...");
 
         if (optionalResposta.isEmpty()){
-            log.info("Resposta não foi encontrado na base de dados.");
-            throw new NoSuchElementException("Resposta não encontrado");
+            log.info("Resposta não foi encontrada na base de dados.");
+            throw new NoSuchElementException("Resposta não encontrada");
         }
 
         Usuario autor = optionalResposta.get().getAutor();
