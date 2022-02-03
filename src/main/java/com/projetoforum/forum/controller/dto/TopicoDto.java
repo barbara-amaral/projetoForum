@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TopicoDto {
+    private String id;
     private String titulo;
     private String mensagem;
     private String tag;
@@ -15,12 +16,17 @@ public class TopicoDto {
     private StatusTopico status;
 
     public TopicoDto(Topico topico) {
+        this.id = topico.getId();
         this.titulo = topico.getTitulo();
         this.mensagem = topico.getMensagem();
         this.tag = topico.getTag();
         this.dataCriacao = topico.getDataCriacao();
         this.autor = topico.getAutor().getNome();
         this.status = topico.getStatus();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getTitulo() {

@@ -27,7 +27,7 @@ public class AutenticacaoService implements UserDetailsService {
         log.info("Procurando usuário na base de dados...");
         Usuario usuario = usuarioService.findUsuarioByEmail(username);
         if(usuario!=null) {
-            log.info("Usuário encontrado.");
+            log.info("Usuário encontrado: " + usuario.getEmail());
             return usuario;
         }
         log.info("Usuário não encontrado.");

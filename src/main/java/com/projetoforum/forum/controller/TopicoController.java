@@ -8,6 +8,8 @@ import com.projetoforum.forum.model.Topico;
 import com.projetoforum.forum.config.security.TokenService;
 import com.projetoforum.forum.service.TopicoService;
 import com.projetoforum.forum.service.UsuarioService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/topicos")
+@Api(value = "topico", tags = {"Tópico"})
 public class TopicoController {
 
     @Autowired
@@ -40,6 +43,8 @@ public class TopicoController {
     TokenService tokenService;
 
     private static final Logger log = LoggerFactory.getLogger(TopicoController.class);
+
+    @ApiOperation(value = "Cadastra um novo tópico.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir um cadastro, copiar o token e colar na frente da palavra Bearer.")
 
     @PostMapping("novotopico")
     @Transactional
@@ -60,6 +65,9 @@ public class TopicoController {
         URI uri = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
         return ResponseEntity.created(uri).body(new TopicoDto(topico));
     }
+
+    @ApiOperation(value = "Deleta um tópico.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir um cadastro, copiar o token e colar na frente da palavra Bearer." +
+            " Além disso, somente o autor do tópico pode deletá-lo. Você também precisará do ID do tópico que quer deletar.")
 
     @DeleteMapping("/{id}")
     @Transactional
@@ -92,6 +100,9 @@ public class TopicoController {
             return ResponseEntity.notFound().build();
     }
 
+    @ApiOperation(value = "Atualiza um tópico.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir um cadastro, copiar o token e colar na frente da palavra Bearer." +
+            " Além disso, somente o autor do tópico pode atualizá-lo. Você também precisará do ID do tópico que quer atualizar.")
+
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<?> atualizar(@PathVariable(value = "id") String id, @RequestBody @Valid AtualizacaoTopicoDto atualizacaoTopicoDto, HttpServletRequest httpServletRequest){
@@ -121,6 +132,9 @@ public class TopicoController {
         return ResponseEntity.notFound().build();
 
     }
+
+    @ApiOperation(value = "Lista todos os tópicos.", notes = "Esse método não necessita de autenticação." +
+            " Você também pode listar por tag, se preferir.")
 
     @GetMapping("/listar")
     @Transactional

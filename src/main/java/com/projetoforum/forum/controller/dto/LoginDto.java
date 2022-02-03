@@ -1,5 +1,6 @@
 package com.projetoforum.forum.controller.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 public class LoginDto {

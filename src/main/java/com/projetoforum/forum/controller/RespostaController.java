@@ -12,6 +12,8 @@ import com.projetoforum.forum.model.Usuario;
 import com.projetoforum.forum.service.RespostaService;
 import com.projetoforum.forum.service.TopicoService;
 import com.projetoforum.forum.service.UsuarioService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/")
+@Api(value = "resposta", tags = {"Resposta"})
 public class RespostaController {
 
     @Autowired
@@ -45,6 +48,9 @@ public class RespostaController {
     RespostaService respostaService;
 
     private static final Logger log = LoggerFactory.getLogger(TopicoController.class);
+
+    @ApiOperation(value = "Responde um tópico.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir um cadastro, copiar o token e colar na frente da palavra Bearer." +
+            " Além disso, você precisará do ID do tópico que quer responder.")
 
 
     @PostMapping("/topico/responder/{id}")
@@ -92,6 +98,9 @@ public class RespostaController {
         return ResponseEntity.ok().body(new RespostaDto(topico, resposta));
     }
 
+    @ApiOperation(value = "Atualiza uma resposta.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir um cadastro, copiar o token e colar na frente da palavra Bearer." +
+            " Além disso, você precisará do ID da resposta que quer editar.")
+
     @PutMapping("/topico/resposta/editar/{id}")
     @Transactional
     public ResponseEntity<?> editarResposta (@PathVariable(value = "id") String id, @RequestBody @Valid AtualizacaoRespostaDto atualizacaoRespostaDto, HttpServletRequest httpServletRequest){
@@ -132,6 +141,9 @@ public class RespostaController {
         return ResponseEntity.ok().body(new RespostaDto(topico, resposta));
 
     }
+
+    @ApiOperation(value = "Deleta uma resposta.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir um cadastro, copiar o token e colar na frente da palavra Bearer." +
+            " Além disso, você precisará do ID da resposta que quer deletar.")
 
     @DeleteMapping("/topico/resposta/deletarresposta/{id}")
     @Transactional
@@ -177,6 +189,9 @@ public class RespostaController {
         log.info("Resposta deletada.");
         return ResponseEntity.ok("Resposta deletada com sucesso.");
     }
+
+    @ApiOperation(value = "Lista as respostas de  um tópico.", notes = "Esse método não necessita de autenticação." +
+            " Você precisará do ID do tópico que quer listar as respostas.")
 
 
     @GetMapping("/topico/respostas/listar/{id}")

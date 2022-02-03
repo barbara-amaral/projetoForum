@@ -8,6 +8,9 @@ import com.projetoforum.forum.model.Usuario;
 import com.projetoforum.forum.service.UsuarioService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +29,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cadastro")
+@Api(value = "usuario", tags = {"Usuário"})
 public class UsuarioController {
 
     @Autowired
@@ -39,6 +43,10 @@ public class UsuarioController {
 
     private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
+    @ApiOperation(value = "Faz o cadastro de um novo usuário.", notes = "Esse método não necessita de autenticação." +
+            " Se quiser testar métodos restritos, como o de listar os usuários cadastrados, seu usuário precisa ser um ADMIN. " +
+            "Para isso, basta cadastrar com um e-mail que termine com \"@admin.com.\"")
+
     @PostMapping
     public ResponseEntity<UsuarioDto> cadastrar(@RequestBody @Valid CadastroUsuarioDto cadastroUsuarioDto, UriComponentsBuilder uriComponentsBuilder){
         Usuario usuario = new Usuario(cadastroUsuarioDto);
@@ -48,6 +56,14 @@ public class UsuarioController {
         usuario.setSenha(passwordEncoder.encode(cadastroUsuarioDto.getSenha()));
 
         log.info("Senha gerada.");
+
+        usuario.setEmail(cadastroUsuarioDto.getEmail());
+
+        if (usuario.getEmail().endsWith("@admin.com")){
+            Perfil perfil = new Perfil();
+            perfil.setNome("ROLE_ADMIN");
+            usuario.addPerfil(perfil);
+        }
 
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
@@ -63,6 +79,10 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(new UsuarioDto(usuario));
 
     }
+
+    @ApiOperation(value = "Deleta um usuário.", notes = "Para deletar um usuário, você precisa estar logado " +
+            "no sistema. Nesse método só é possível deletar seu próprio usuário. Para testar, faça um cadastro antes, " +
+            "pois precisará confirmar seu e-mail e senha para prosseguir.")
 
     @DeleteMapping("/deletar")
     public ResponseEntity<?> deletar(@RequestBody @Valid DeletarUsuarioDto deletarUsuarioDto, HttpServletRequest httpServletRequest){
@@ -88,6 +108,11 @@ public class UsuarioController {
 
     }
 
+    @ApiOperation(value = "Lista os usuários cadastrados.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir " +
+            "um cadastro, copiar o token e colar na frente da palavra Bearer. Além disso, o usuário precisa ser um ADMIN, pois esse método" +
+            " é restrito. Para isso, você pode cadastrar um usuário com o email \"@admin.com\"." +
+            " Você também pode listar um usuário específico por e-mail, se preferir.")
+
     @GetMapping("/listar")
     public ResponseEntity<?> listar(@RequestParam(required = false) String email){
 
@@ -107,6 +132,9 @@ public class UsuarioController {
 
         }
     }
+
+    @ApiOperation(value = "Atualiza o email do usuário.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir " +
+            "um cadastro, copiar o token e colar na frente da palavra Bearer.")
 
    @PutMapping("atualizarEmail")
    public Object atualizarEmail(@RequestBody @Valid AtualizacaoUsuarioEmailDto atualizacaoUsuarioEmailDto, AtualizacaoUsuarioNomeDto nomeForm, HttpServletRequest httpServletRequest){
@@ -128,6 +156,9 @@ public class UsuarioController {
             return ResponseEntity.ok("E-mail atualizado com sucesso.");
    }
 
+    @ApiOperation(value = "Atualiza o nome do usuário.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir " +
+            "um cadastro, copiar o token e colar na frente da palavra Bearer.")
+
    @PutMapping("/atualizarNome")
    public ResponseEntity<?> atualizarNome(@RequestBody @Valid AtualizacaoUsuarioNomeDto atualizacaoUsuarioNomeDto, HttpServletRequest httpServletRequest){
 
@@ -146,6 +177,9 @@ public class UsuarioController {
        log.info("Nome atualizado.");
        return ResponseEntity.ok("Nome atualizado com sucesso.");
    }
+
+    @ApiOperation(value = "Atualiza a senha do usuário.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir " +
+            "um cadastro, copiar o token e colar na frente da palavra Bearer.")
 
     @PutMapping("/atualizarSenha")
     public ResponseEntity<?> atualizarSenha(@RequestBody @Valid AtualizacaoSenhaDto atualizacaoSenhaDto, HttpServletRequest httpServletRequest){

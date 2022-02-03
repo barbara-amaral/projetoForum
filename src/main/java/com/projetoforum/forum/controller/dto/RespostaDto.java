@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class RespostaDto {
 
+    private String id;
+
     private String tituloTopico;
 
     private String dataTopico;
@@ -21,12 +23,17 @@ public class RespostaDto {
 
     public RespostaDto(Topico topico, Resposta resposta) {
 
+        this.id = resposta.getId();
         this.tituloTopico = topico.getTitulo();
         this.dataTopico = topico.getDataCriacao();
         this.autorTopico = topico.getAutor().getNome();
         this.mensagemResposta = resposta.getMensagem();
         this.autorResposta = resposta.getAutor().getNome();
         this.dataResposta = resposta.getDataCriacao();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getTituloTopico() {
