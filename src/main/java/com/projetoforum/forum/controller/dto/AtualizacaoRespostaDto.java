@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 
 public class AtualizacaoRespostaDto {
 
-    @NotBlank
+    @NotBlank(message = "A resposta não deve estar em branco.")
     private String mensagem;
 
     public String getMensagem() {
