@@ -30,7 +30,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/topicos")
-@Api(value = "topico", tags = {"Tópico"})
+@Api(tags = {"Tópico"})
 public class TopicoController {
 
     @Autowired

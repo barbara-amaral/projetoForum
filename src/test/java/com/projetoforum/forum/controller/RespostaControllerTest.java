@@ -1,6 +1,5 @@
 package com.projetoforum.forum.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projetoforum.forum.config.security.TokenService;
 import com.projetoforum.forum.controller.dto.LoginDto;
 import com.projetoforum.forum.model.Perfil;
@@ -28,12 +27,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -77,7 +71,7 @@ class RespostaControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -93,7 +87,7 @@ class RespostaControllerTest {
         topico.setTag("teste");
         topico.setAutor(usuario);
         topico.setRespostas(new ArrayList<>());
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = topico.getId();
 
@@ -126,7 +120,7 @@ class RespostaControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -142,7 +136,7 @@ class RespostaControllerTest {
         topico.setTag("teste");
         topico.setAutor(usuario);
         topico.setRespostas(new ArrayList<>());
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = "123456";
 
@@ -174,7 +168,7 @@ class RespostaControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -189,16 +183,16 @@ class RespostaControllerTest {
         topico.setMensagem("Testando");
         topico.setTag("teste");
         topico.setAutor(usuario);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         Resposta resposta = new Resposta();
         resposta.setMensagem("teste");
         resposta.setAutor(usuario);
         resposta.setTopico_id(topico.getId());
-        respostaService.save(resposta);
+        mongoTemplate.save(resposta);
 
         topico.addResposta(resposta);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = resposta.getId();
 
@@ -227,7 +221,7 @@ class RespostaControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -242,16 +236,16 @@ class RespostaControllerTest {
         topico.setMensagem("Testando");
         topico.setTag("teste");
         topico.setAutor(usuario);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         Resposta resposta = new Resposta();
         resposta.setMensagem("teste");
         resposta.setAutor(usuario);
         resposta.setTopico_id(topico.getId());
-        respostaService.save(resposta);
+        mongoTemplate.save(resposta);
 
         topico.addResposta(resposta);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = "123456";
 
@@ -283,7 +277,7 @@ class RespostaControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -298,15 +292,15 @@ class RespostaControllerTest {
         topico.setMensagem("Testando");
         topico.setTag("teste");
         topico.setAutor(usuario);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         Resposta resposta = new Resposta();
         resposta.setMensagem("teste");
         resposta.setTopico_id(topico.getId());
-        respostaService.save(resposta);
+        mongoTemplate.save(resposta);
 
         topico.addResposta(resposta);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = resposta.getId();
 
@@ -338,7 +332,7 @@ class RespostaControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -353,16 +347,16 @@ class RespostaControllerTest {
         topico.setMensagem("Testando");
         topico.setTag("teste");
         topico.setAutor(usuario);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         Resposta resposta = new Resposta();
         resposta.setMensagem("teste");
         resposta.setAutor(usuario);
         resposta.setTopico_id(topico.getId());
-        respostaService.save(resposta);
+        mongoTemplate.save(resposta);
 
         topico.addResposta(resposta);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = resposta.getId();
 
@@ -388,7 +382,7 @@ class RespostaControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -403,16 +397,16 @@ class RespostaControllerTest {
         topico.setMensagem("Testando");
         topico.setTag("teste");
         topico.setAutor(usuario);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         Resposta resposta = new Resposta();
         resposta.setMensagem("teste");
         resposta.setAutor(usuario);
         resposta.setTopico_id(topico.getId());
-        respostaService.save(resposta);
+        mongoTemplate.save(resposta);
 
         topico.addResposta(resposta);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = "123456";
 
@@ -441,7 +435,7 @@ class RespostaControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -456,15 +450,15 @@ class RespostaControllerTest {
         topico.setMensagem("Testando");
         topico.setTag("teste");
         topico.setAutor(usuario);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         Resposta resposta = new Resposta();
         resposta.setMensagem("teste");
         resposta.setTopico_id(topico.getId());
-        respostaService.save(resposta);
+        mongoTemplate.save(resposta);
 
         topico.addResposta(resposta);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = resposta.getId();
 
@@ -492,31 +486,27 @@ class RespostaControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
         loginDto.setSenha("123456");
-
-        UsernamePasswordAuthenticationToken dadosLogin = loginDto.converter();
-        Authentication authentication = authenticationManager.authenticate(dadosLogin);
-        String token = tokenService.gerarToken(authentication);
 
         Topico topico = new Topico();
         topico.setTitulo("Teste");
         topico.setMensagem("Testando");
         topico.setTag("teste");
         topico.setAutor(usuario);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         Resposta resposta = new Resposta();
         resposta.setMensagem("teste");
         resposta.setAutor(usuario);
         resposta.setTopico_id(topico.getId());
-        respostaService.save(resposta);
+        mongoTemplate.save(resposta);
 
         topico.addResposta(resposta);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = topico.getId();
 
@@ -540,31 +530,27 @@ class RespostaControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
         loginDto.setSenha("123456");
-
-        UsernamePasswordAuthenticationToken dadosLogin = loginDto.converter();
-        Authentication authentication = authenticationManager.authenticate(dadosLogin);
-        String token = tokenService.gerarToken(authentication);
 
         Topico topico = new Topico();
         topico.setTitulo("Teste");
         topico.setMensagem("Testando");
         topico.setTag("teste");
         topico.setAutor(usuario);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         Resposta resposta = new Resposta();
         resposta.setMensagem("teste");
         resposta.setAutor(usuario);
         resposta.setTopico_id(topico.getId());
-        respostaService.save(resposta);
+        mongoTemplate.save(resposta);
 
         topico.addResposta(resposta);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = "123456";
 
@@ -591,22 +577,18 @@ class RespostaControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
         loginDto.setSenha("123456");
-
-        UsernamePasswordAuthenticationToken dadosLogin = loginDto.converter();
-        Authentication authentication = authenticationManager.authenticate(dadosLogin);
-        String token = tokenService.gerarToken(authentication);
 
         Topico topico = new Topico();
         topico.setTitulo("Teste");
         topico.setMensagem("Testando");
         topico.setTag("teste");
         topico.setAutor(usuario);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = topico.getId();
 

@@ -109,7 +109,7 @@ class UsuarioControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -141,7 +141,7 @@ class UsuarioControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -175,7 +175,7 @@ class UsuarioControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -209,7 +209,7 @@ class UsuarioControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -243,7 +243,7 @@ class UsuarioControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -276,7 +276,7 @@ class UsuarioControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -309,7 +309,7 @@ class UsuarioControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");

@@ -5,25 +5,24 @@ import com.projetoforum.forum.config.security.TokenService;
 import com.projetoforum.forum.controller.dto.*;
 import com.projetoforum.forum.model.Perfil;
 import com.projetoforum.forum.model.Usuario;
+import com.projetoforum.forum.service.EmailService;
 import com.projetoforum.forum.service.UsuarioService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import freemarker.template.TemplateException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.slf4j.Logger;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -41,6 +40,9 @@ public class UsuarioController {
     @Autowired
     TokenService tokenService;
 
+    @Autowired
+    private EmailService emailService;
+
     private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
     @ApiOperation(value = "Faz o cadastro de um novo usuário.", notes = "Esse método não necessita de autenticação." +
@@ -48,7 +50,7 @@ public class UsuarioController {
             "Para isso, basta cadastrar com um e-mail que termine com \"@admin.com.\"")
 
     @PostMapping
-    public ResponseEntity<UsuarioDto> cadastrar(@RequestBody @Valid CadastroUsuarioDto cadastroUsuarioDto, UriComponentsBuilder uriComponentsBuilder){
+    public ResponseEntity<UsuarioDto> cadastrar(@RequestBody @Valid CadastroUsuarioDto cadastroUsuarioDto, UriComponentsBuilder uriComponentsBuilder) throws IOException, MessagingException, TemplateException {
         Usuario usuario = new Usuario(cadastroUsuarioDto);
 
         log.info("Criando um novo usuário...");
@@ -57,9 +59,11 @@ public class UsuarioController {
 
         log.info("Senha gerada.");
 
-        usuario.setEmail(cadastroUsuarioDto.getEmail());
+        String email = cadastroUsuarioDto.getEmail();
 
-        if (usuario.getEmail().endsWith("@admin.com")){
+        usuario.setEmail(email);
+
+        if (email.endsWith("@admin.com")){
             Perfil perfil = new Perfil();
             perfil.setNome("ROLE_ADMIN");
             usuario.addPerfil(perfil);
@@ -70,10 +74,15 @@ public class UsuarioController {
         usuario.addPerfil(perfil);
 
         log.info("Perfil de acesso atribuído: ROLE_USER.");
-
+        emailService.sendEmail(usuario);
+        log.info("Email de boas vindas enviado.");
         usuarioService.save(usuario);
 
         log.info("Usuário salvo na base de dados.");
+
+
+
+
 
         URI uri = uriComponentsBuilder.path("/cadastro/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body(new UsuarioDto(usuario));
