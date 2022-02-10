@@ -41,18 +41,13 @@ public class TopicoServiceImpl implements TopicoService{
     }
 
     @Override
-    public List<Topico> findTopicoByTag(String tag) {
-        return topicoRepository.findTopicoByTag(tag);
+    public List<Topico> findTopicosByTag(String tag) {
+        return topicoRepository.findTopicosByTag(tag);
     }
 
     @Override
     public List<Topico> findTopicoByAutorNome(String nome) {
         return topicoRepository.findTopicoByAutorNome(nome);
-    }
-
-    @Override
-    public List<Topico> findAllById(String id) {
-        return topicoRepository.findAllById(id);
     }
 
 
