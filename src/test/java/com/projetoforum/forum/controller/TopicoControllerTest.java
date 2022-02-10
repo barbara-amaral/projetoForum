@@ -90,7 +90,7 @@ class TopicoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(201));
 
-            List <Topico> topicos =  topicoService.findTopicoByTag("teste");
+            List <Topico> topicos =  topicoService.findTopicosByTag("teste");
             Topico topico = topicos.get(0);
             mongoTemplate.remove(topico);
             mongoTemplate.remove(usuario);

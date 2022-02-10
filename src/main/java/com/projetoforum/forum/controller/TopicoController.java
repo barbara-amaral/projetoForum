@@ -145,7 +145,7 @@ public class TopicoController {
             return ResponseEntity.ok(TopicoDto.converter(topicos));
         }else {
             log.info("Buscando tópicos com a tag informada...");
-            List<Topico> topicos = topicoService.findTopicoByTag(tag);
+            List<Topico> topicos = topicoService.findTopicosByTag(tag);
             log.info("Retornando tópicos.");
             if(topicos.isEmpty()){
                 log.info("Houve um erro: Não existem tópicos com a tag informada.");
