@@ -1,54 +1,29 @@
 package com.projetoforum.forum.service;
 
-import com.projetoforum.forum.config.RecomendacoesService;
-import com.projetoforum.forum.controller.UsuarioController;
-import com.projetoforum.forum.model.Topico;
 import com.projetoforum.forum.model.Usuario;
-import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import freemarker.template.Configuration;
 
 import javax.mail.MessagingException;
+import javax.mail.Quota;
 import javax.mail.internet.MimeMessage;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
-@EnableScheduling
 public class EmailService {
     final Configuration configuration;
     final JavaMailSender javaMailSender;
-
-    @Autowired
-    RecomendacoesService recomendacoesService;
-
-    @Autowired
-    UsuarioService usuarioService;
-
-    boolean alreadyExecuted = false;
-
-    List<String> emails;
-
-    private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
-
-    @Scheduled(cron = "0 30 8 15 * *")
-    public void emails() throws MessagingException, TemplateException, IOException {
-
-        sendEmailRecomendacoes();
-        log.info("Emails enviados");
-        alreadyExecuted = false;
-    }
 
     public EmailService(Configuration configuration, JavaMailSender javaMailSender) throws IOException {
         this.configuration = configuration;
@@ -66,74 +41,11 @@ public class EmailService {
         javaMailSender.send(mimeMessage);
     }
 
-
-    public void sendEmailRecomendacoes() throws MessagingException, IOException, TemplateException {
-
-        log.info("Iniciando envio de emails.");
-
-        if (alreadyExecuted == false) {
-            emails = usuarioService.findAll().stream().map(Usuario::getEmail).collect(Collectors.toList());
-            log.info("Lista possui " + emails.size() + " emails.");
-            alreadyExecuted = true;
-        }
-
-        do {
-
-            if (emails.size() != 0) {
-
-                int i = emails.size() - 1;
-
-                Usuario user = usuarioService.findUsuarioByEmail(emails.get(i));
-                List<Topico> topicos = recomendacoesService.sugerirTopicos(user);
-
-                MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
-                helper.setSubject("Achamos que você vai gostar desses tópicos");
-
-                if (topicos.size() == 0) {
-                    emails.remove(user.getEmail());
-                    log.info("usuario " + user.getEmail() + " removido da lista pois nao ha topicos para recomendar para esse usuario ainda.");
-
-                    if (emails.size() != 0) {
-                        sendEmailRecomendacoes();
-                    }
-                    break;
-                }
-
-                helper.setTo(user.getEmail());
-                String emailContentRecomendacoes = getEmailContentRecomendacoes(user, topicos);
-                helper.setText(emailContentRecomendacoes, true);
-                javaMailSender.send(mimeMessage);
-
-                log.info("email enviado para " + user.getEmail());
-
-                emails.remove(user.getEmail());
-                log.info("usuario " + user.getEmail() + " removido da lista pois email ja foi enviado.");
-
-                if (emails.size() == 0) {
-                    break;
-                }
-
-            }
-
-        } while (emails.size() != 0);
-
-    }
-
     String getEmailContent(Usuario user) throws IOException, TemplateException {
         StringWriter stringWriter = new StringWriter();
         Map<String, Object> model = new HashMap<>();
         model.put("user", user);
         configuration.getTemplate("email2.ftlh").process(model, stringWriter);
-        return stringWriter.getBuffer().toString();
-    }
-
-    String getEmailContentRecomendacoes(Usuario user, List<Topico> topicos) throws IOException, TemplateException {
-        StringWriter stringWriter = new StringWriter();
-        Map<String, Object> model = new HashMap<>();
-        model.put("user", user);
-        model.put("topicos", topicos);
-        configuration.getTemplate("emailRecomendacoes.ftlh").process(model, stringWriter);
         return stringWriter.getBuffer().toString();
     }
 }
