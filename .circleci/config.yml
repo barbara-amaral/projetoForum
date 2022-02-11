@@ -2,7 +2,6 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 orbs: 
-  browser-tools: circleci/browser-tools@1.2.3
   codecov: codecov/codecov@3.2.2
 
 language: java
@@ -28,7 +27,6 @@ jobs:
     steps:
       # Checkout the code as the first step.
       - checkout
-      - browser-tools/install-browser-tools
       # Use mvn clean and package as the standard maven build phase
       - run:
           name: Build
