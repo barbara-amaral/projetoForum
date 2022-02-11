@@ -75,11 +75,11 @@ public class UsuarioController {
 
         log.info("Perfil de acesso atribuído: ROLE_USER.");
 
-        emailService.sendEmail(usuario);
-        log.info("Email de boas vindas enviado.");
-
         usuarioService.save(usuario);
         log.info("Usuário salvo na base de dados.");
+
+        emailService.sendEmail(usuario);
+        log.info("Email de boas vindas enviado.");
 
         URI uri = uriComponentsBuilder.path("/cadastro/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body(new UsuarioDto(usuario));
