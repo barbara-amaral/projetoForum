@@ -15,5 +15,5 @@ public interface TopicoService {
     Topico getById(String id);
     List<Topico> findAll();
     List<Topico> findTopicosByTag(String tag);
-    List<Topico> findTopicoByAutorNome(String nome);
+    List<Topico> findTopicoByAutorEmail(String email);
 }

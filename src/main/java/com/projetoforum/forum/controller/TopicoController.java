@@ -118,7 +118,7 @@ public class TopicoController {
         log.info("Recuperando usuário através do token...");
         log.info("Verificando usuário...");
 
-        if(optionalTopico.isPresent() && usuarioLogado.equals(autor)){
+        if(optionalTopico.isPresent() && usuarioLogado.equals(autor) || (usuarioLogado.getEmail()).equals(autor.getEmail()) ){
             Topico topico = atualizacaoTopicoDto.atualizar(id, topicoService);
             log.info("Tópico atualizado.");
             return ResponseEntity.ok(new TopicoDto(topico));

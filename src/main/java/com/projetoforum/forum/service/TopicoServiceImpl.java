@@ -46,8 +46,8 @@ public class TopicoServiceImpl implements TopicoService{
     }
 
     @Override
-    public List<Topico> findTopicoByAutorNome(String nome) {
-        return topicoRepository.findTopicoByAutorNome(nome);
+    public List<Topico> findTopicoByAutorEmail(String email) {
+        return topicoRepository.findTopicoByAutorEmail(email);
     }
 
 

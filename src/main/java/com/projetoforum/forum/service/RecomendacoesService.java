@@ -29,14 +29,14 @@ public class RecomendacoesService {
         List<Topico> topicos = new ArrayList<>();
         List<Topico> lista = new ArrayList<>();
 
-        Set<String> tags = topicoService.findTopicoByAutorNome(usuario.getNome()).stream().map(Topico::getTag).collect(Collectors.toSet());
+        Set<String> tags = topicoService.findTopicoByAutorEmail(usuario.getEmail()).stream().map(Topico::getTag).collect(Collectors.toSet());
 
         for (String tag : tags) {
             lista = topicoService.findTopicosByTag(tag);
         }
 
         for (Topico t: lista) {
-            if(!(t.getAutor().getNome()).equals((usuario.getNome()))){
+            if(!(t.getAutor().getEmail()).equals((usuario.getEmail()))){
                 topicos.add(t);
             }
         }
