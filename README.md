@@ -14,17 +14,17 @@ Você pode testar essa aplicação através do [Swagger](https://projeto-forum.h
 
 ## Informações importantes:
   
-  Para a autenticação é utilizado o token JWT, e a autenticação é do tipo Bearer. 
-  Quase todos os métodos necessitam de autenticação, com excessão dos métodos de listar os tópicos e as respostas.
-  Para fazer o login e se autenticar, é preciso ter um cadastro antes.
-  Para testar métodos restritos, como o de listar os usuários cadastrados, é necessário ser um ADMIN.
-  Para cadastrar um usuário ADMIN, basta cadastrar um e-mail que termine com "@admin.com". Todos os outros recebem perfil de acesso USER.
+  • Para a autenticação é utilizado o token JWT, e a autenticação é do tipo Bearer. <br />
+  • Quase todos os métodos necessitam de autenticação, com excessão dos métodos de listar os tópicos e as respostas. <br />
+  • Para fazer o login e se autenticar, é preciso ter um cadastro antes. <br />
+  • Para testar métodos restritos, como o de listar os usuários cadastrados, é necessário ser um ADMIN. <br />
+  • Para cadastrar um usuário ADMIN, basta cadastrar um e-mail que termine com "@admin.com". Todos os outros recebem perfil de acesso USER. <br />
   
   #### Atenção: 
   
-  Se quiser receber o e-mail de boas vindas, cadastre um e-mail válido.
-  A aplicação também envia, todos os dias, e-mails de recomendações de tópicos baseados nos tópicos que você cadastrou.
-  Se não quiser mais receber os e-mails, basta deletar seu usuário.
+  • Se quiser receber o e-mail de boas vindas, cadastre um e-mail válido. <br />
+  • A aplicação também envia, todos os dias, e-mails de recomendações de tópicos baseados nos tópicos que você cadastrou. <br />
+  • Se não quiser mais receber os e-mails, basta deletar seu usuário.
   
   
   
