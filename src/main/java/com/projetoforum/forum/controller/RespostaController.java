@@ -49,8 +49,7 @@ public class RespostaController {
 
     private static final Logger log = LoggerFactory.getLogger(TopicoController.class);
 
-    @ApiOperation(value = "Responde um tópico.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir um cadastro, copiar o token e colar na frente da palavra Bearer." +
-            " Além disso, você precisará do ID do tópico que quer responder.")
+    @ApiOperation(value = "Responde um tópico.", notes = "Esse método necessita de autenticação.")
 
 
     @PostMapping("/topico/responder/{id}")
@@ -98,8 +97,7 @@ public class RespostaController {
         return ResponseEntity.ok().body(new RespostaDto(topico, resposta));
     }
 
-    @ApiOperation(value = "Atualiza uma resposta.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir um cadastro, copiar o token e colar na frente da palavra Bearer." +
-            " Além disso, você precisará do ID da resposta que quer editar.")
+    @ApiOperation(value = "Atualiza uma resposta.", notes = "Esse método necessita de autenticação. Além disso, você precisará do ID da resposta que quer editar.")
 
     @PutMapping("/topico/resposta/editar/{id}")
     @Transactional
@@ -142,8 +140,7 @@ public class RespostaController {
 
     }
 
-    @ApiOperation(value = "Deleta uma resposta.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir um cadastro, copiar o token e colar na frente da palavra Bearer." +
-            " Além disso, você precisará do ID da resposta que quer deletar.")
+    @ApiOperation(value = "Deleta uma resposta.", notes = "Esse método necessita de autenticação. Além disso, você precisará do ID da resposta que quer deletar.")
 
     @DeleteMapping("/topico/resposta/deletarresposta/{id}")
     @Transactional

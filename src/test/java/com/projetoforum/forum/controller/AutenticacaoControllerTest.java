@@ -45,7 +45,7 @@ public class AutenticacaoControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         URI uri = new URI("/auth");
         String json = "{\"email\":\"teste@testando.com\",\"senha\":\"123456\"}";
@@ -70,7 +70,7 @@ public class AutenticacaoControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         URI uri = new URI("/auth");
         String json = "{\"email\":\"emailErrado@ibm.com\",\"senha\":\"senhaErrada\"}";

@@ -69,7 +69,7 @@ class TopicoControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -90,7 +90,7 @@ class TopicoControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(201));
 
-            List <Topico> topicos =  topicoService.findTopicoByTag("teste");
+            List <Topico> topicos =  topicoService.findTopicosByTag("teste");
             Topico topico = topicos.get(0);
             mongoTemplate.remove(topico);
             mongoTemplate.remove(usuario);
@@ -106,7 +106,7 @@ class TopicoControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -140,7 +140,7 @@ class TopicoControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -155,7 +155,7 @@ class TopicoControllerTest {
         topico.setMensagem("Testando");
         topico.setTag("teste");
         topico.setAutor(usuario);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = topico.getId();
 
@@ -178,7 +178,7 @@ class TopicoControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -195,14 +195,14 @@ class TopicoControllerTest {
         Perfil perfil2 = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(autor);
+        mongoTemplate.save(autor);
 
         Topico topico = new Topico();
         topico.setTitulo("Teste");
         topico.setMensagem("Testando");
         topico.setTag("teste");
         topico.setAutor(autor);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = topico.getId();
 
@@ -227,7 +227,7 @@ class TopicoControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -242,7 +242,7 @@ class TopicoControllerTest {
         topico.setMensagem("Testando");
         topico.setTag("teste");
         topico.setAutor(usuario);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = topico.getId();
 
@@ -269,7 +269,7 @@ class TopicoControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -284,7 +284,7 @@ class TopicoControllerTest {
         topico.setMensagem("Testando");
         topico.setTag("teste");
         topico.setAutor(usuario);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String id = topico.getId();
 
@@ -321,14 +321,14 @@ class TopicoControllerTest {
         Perfil perfil = new Perfil();
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
-        usuarioService.save(usuario);
+        mongoTemplate.save(usuario);
 
         Topico topico = new Topico();
         topico.setTitulo("Teste");
         topico.setMensagem("Testando");
         topico.setTag("teste");
         topico.setAutor(usuario);
-        topicoService.save(topico);
+        mongoTemplate.save(topico);
 
         String tag = topico.getTag();
 

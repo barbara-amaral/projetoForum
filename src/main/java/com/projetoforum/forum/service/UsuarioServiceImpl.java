@@ -43,4 +43,5 @@ public class UsuarioServiceImpl implements UsuarioService{
     public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
+
 }

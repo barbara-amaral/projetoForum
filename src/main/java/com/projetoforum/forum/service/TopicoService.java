@@ -14,7 +14,6 @@ public interface TopicoService {
     void deleteById(String id);
     Topico getById(String id);
     List<Topico> findAll();
-    List<Topico> findTopicoByTag(String tag);
+    List<Topico> findTopicosByTag(String tag);
     List<Topico> findTopicoByAutorNome(String nome);
-    List<Topico> findAllById(String id);
 }

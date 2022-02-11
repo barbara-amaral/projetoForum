@@ -5,25 +5,24 @@ import com.projetoforum.forum.config.security.TokenService;
 import com.projetoforum.forum.controller.dto.*;
 import com.projetoforum.forum.model.Perfil;
 import com.projetoforum.forum.model.Usuario;
+import com.projetoforum.forum.service.EmailService;
 import com.projetoforum.forum.service.UsuarioService;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import freemarker.template.TemplateException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.slf4j.Logger;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -41,6 +40,9 @@ public class UsuarioController {
     @Autowired
     TokenService tokenService;
 
+    @Autowired
+    private EmailService emailService;
+
     private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
     @ApiOperation(value = "Faz o cadastro de um novo usuário.", notes = "Esse método não necessita de autenticação." +
@@ -48,7 +50,7 @@ public class UsuarioController {
             "Para isso, basta cadastrar com um e-mail que termine com \"@admin.com.\"")
 
     @PostMapping
-    public ResponseEntity<UsuarioDto> cadastrar(@RequestBody @Valid CadastroUsuarioDto cadastroUsuarioDto, UriComponentsBuilder uriComponentsBuilder){
+    public ResponseEntity<UsuarioDto> cadastrar(@RequestBody @Valid CadastroUsuarioDto cadastroUsuarioDto, UriComponentsBuilder uriComponentsBuilder) throws IOException, MessagingException, TemplateException {
         Usuario usuario = new Usuario(cadastroUsuarioDto);
 
         log.info("Criando um novo usuário...");
@@ -57,9 +59,11 @@ public class UsuarioController {
 
         log.info("Senha gerada.");
 
-        usuario.setEmail(cadastroUsuarioDto.getEmail());
+        String email = cadastroUsuarioDto.getEmail();
 
-        if (usuario.getEmail().endsWith("@admin.com")){
+        usuario.setEmail(email);
+
+        if (email.endsWith("@admin.com")){
             Perfil perfil = new Perfil();
             perfil.setNome("ROLE_ADMIN");
             usuario.addPerfil(perfil);
@@ -71,8 +75,10 @@ public class UsuarioController {
 
         log.info("Perfil de acesso atribuído: ROLE_USER.");
 
-        usuarioService.save(usuario);
+        emailService.sendEmail(usuario);
+        log.info("Email de boas vindas enviado.");
 
+        usuarioService.save(usuario);
         log.info("Usuário salvo na base de dados.");
 
         URI uri = uriComponentsBuilder.path("/cadastro/{id}").buildAndExpand(usuario.getId()).toUri();
@@ -80,9 +86,7 @@ public class UsuarioController {
 
     }
 
-    @ApiOperation(value = "Deleta um usuário.", notes = "Para deletar um usuário, você precisa estar logado " +
-            "no sistema. Nesse método só é possível deletar seu próprio usuário. Para testar, faça um cadastro antes, " +
-            "pois precisará confirmar seu e-mail e senha para prosseguir.")
+    @ApiOperation(value = "Deleta um usuário.", notes = "Esse método necessita de autenticação. Além disso, só é possível deletar seu próprio usuário. Você também precisará confirmar seu e-mail e senha para prosseguir.")
 
     @DeleteMapping("/deletar")
     public ResponseEntity<?> deletar(@RequestBody @Valid DeletarUsuarioDto deletarUsuarioDto, HttpServletRequest httpServletRequest){
@@ -108,8 +112,7 @@ public class UsuarioController {
 
     }
 
-    @ApiOperation(value = "Lista os usuários cadastrados.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir " +
-            "um cadastro, copiar o token e colar na frente da palavra Bearer. Além disso, o usuário precisa ser um ADMIN, pois esse método" +
+    @ApiOperation(value = "Lista os usuários cadastrados.", notes = "Esse método necessita de autenticação. Além disso, seu usuário precisa ser um ADMIN, pois esse método" +
             " é restrito. Para isso, você pode cadastrar um usuário com o email \"@admin.com\"." +
             " Você também pode listar um usuário específico por e-mail, se preferir.")
 
@@ -133,8 +136,7 @@ public class UsuarioController {
         }
     }
 
-    @ApiOperation(value = "Atualiza o email do usuário.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir " +
-            "um cadastro, copiar o token e colar na frente da palavra Bearer.")
+    @ApiOperation(value = "Atualiza o email do usuário.", notes = "Esse método necessita de autenticação.")
 
    @PutMapping("atualizarEmail")
    public Object atualizarEmail(@RequestBody @Valid AtualizacaoUsuarioEmailDto atualizacaoUsuarioEmailDto, AtualizacaoUsuarioNomeDto nomeForm, HttpServletRequest httpServletRequest){
@@ -156,8 +158,7 @@ public class UsuarioController {
             return ResponseEntity.ok("E-mail atualizado com sucesso.");
    }
 
-    @ApiOperation(value = "Atualiza o nome do usuário.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir " +
-            "um cadastro, copiar o token e colar na frente da palavra Bearer.")
+    @ApiOperation(value = "Atualiza o nome do usuário.", notes = "Esse método necessita de autenticação.")
 
    @PutMapping("/atualizarNome")
    public ResponseEntity<?> atualizarNome(@RequestBody @Valid AtualizacaoUsuarioNomeDto atualizacaoUsuarioNomeDto, HttpServletRequest httpServletRequest){
@@ -178,8 +179,7 @@ public class UsuarioController {
        return ResponseEntity.ok("Nome atualizado com sucesso.");
    }
 
-    @ApiOperation(value = "Atualiza a senha do usuário.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir " +
-            "um cadastro, copiar o token e colar na frente da palavra Bearer.")
+    @ApiOperation(value = "Atualiza a senha do usuário.", notes = "Esse método necessita de autenticação.")
 
     @PutMapping("/atualizarSenha")
     public ResponseEntity<?> atualizarSenha(@RequestBody @Valid AtualizacaoSenhaDto atualizacaoSenhaDto, HttpServletRequest httpServletRequest){

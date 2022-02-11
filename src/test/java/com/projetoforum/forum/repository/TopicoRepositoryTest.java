@@ -30,7 +30,7 @@ class TopicoRepositoryTest {
         topico.setTitulo("Teste");
         topico.setMensagem("Testando");
         topico.setTag("teste");
-        topicoRepository.save(topico);
+        mongoTemplate.save(topico);
         String id = topico.getId();
 
         topico = topicoRepository.getById(id);
@@ -46,10 +46,10 @@ class TopicoRepositoryTest {
         topico.setTitulo("Teste");
         topico.setMensagem("Testando");
         topico.setTag("teste");
-        topicoRepository.save(topico);
+        mongoTemplate.save(topico);
         String tag = topico.getTag();
 
-        List<Topico> topicos = topicoRepository.findTopicoByTag(tag);
+        List<Topico> topicos = topicoRepository.findTopicosByTag(tag);
         topico = topicos.get(0);
         Assert.assertNotNull(topico);
         Assert.assertEquals(tag, topico.getTag());

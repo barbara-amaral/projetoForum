@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface TopicoRepository extends MongoRepository<Topico, String> {
     Topico getById(String id);
-    List<Topico> findTopicoByTag(String tag);
+    List<Topico> findTopicosByTag(String tag);
     List<Topico> findTopicoByAutorNome(String nome);
     List<Topico> findAllById(String id);
 }
