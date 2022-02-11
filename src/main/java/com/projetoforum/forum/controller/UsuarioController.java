@@ -86,9 +86,7 @@ public class UsuarioController {
 
     }
 
-    @ApiOperation(value = "Deleta um usuário.", notes = "Para deletar um usuário, você precisa estar logado " +
-            "no sistema. Nesse método só é possível deletar seu próprio usuário. Para testar, faça um cadastro antes, " +
-            "pois precisará confirmar seu e-mail e senha para prosseguir.")
+    @ApiOperation(value = "Deleta um usuário.", notes = "Esse método necessita de autenticação. Além disso, só é possível deletar seu próprio usuário. Você também precisará confirmar seu e-mail e senha para prosseguir.")
 
     @DeleteMapping("/deletar")
     public ResponseEntity<?> deletar(@RequestBody @Valid DeletarUsuarioDto deletarUsuarioDto, HttpServletRequest httpServletRequest){
@@ -114,8 +112,7 @@ public class UsuarioController {
 
     }
 
-    @ApiOperation(value = "Lista os usuários cadastrados.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir " +
-            "um cadastro, copiar o token e colar na frente da palavra Bearer. Além disso, o usuário precisa ser um ADMIN, pois esse método" +
+    @ApiOperation(value = "Lista os usuários cadastrados.", notes = "Esse método necessita de autenticação. Além disso, seu usuário precisa ser um ADMIN, pois esse método" +
             " é restrito. Para isso, você pode cadastrar um usuário com o email \"@admin.com\"." +
             " Você também pode listar um usuário específico por e-mail, se preferir.")
 
@@ -139,8 +136,7 @@ public class UsuarioController {
         }
     }
 
-    @ApiOperation(value = "Atualiza o email do usuário.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir " +
-            "um cadastro, copiar o token e colar na frente da palavra Bearer.")
+    @ApiOperation(value = "Atualiza o email do usuário.", notes = "Esse método necessita de autenticação.")
 
    @PutMapping("atualizarEmail")
    public Object atualizarEmail(@RequestBody @Valid AtualizacaoUsuarioEmailDto atualizacaoUsuarioEmailDto, AtualizacaoUsuarioNomeDto nomeForm, HttpServletRequest httpServletRequest){
@@ -162,8 +158,7 @@ public class UsuarioController {
             return ResponseEntity.ok("E-mail atualizado com sucesso.");
    }
 
-    @ApiOperation(value = "Atualiza o nome do usuário.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir " +
-            "um cadastro, copiar o token e colar na frente da palavra Bearer.")
+    @ApiOperation(value = "Atualiza o nome do usuário.", notes = "Esse método necessita de autenticação.")
 
    @PutMapping("/atualizarNome")
    public ResponseEntity<?> atualizarNome(@RequestBody @Valid AtualizacaoUsuarioNomeDto atualizacaoUsuarioNomeDto, HttpServletRequest httpServletRequest){
@@ -184,8 +179,7 @@ public class UsuarioController {
        return ResponseEntity.ok("Nome atualizado com sucesso.");
    }
 
-    @ApiOperation(value = "Atualiza a senha do usuário.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir " +
-            "um cadastro, copiar o token e colar na frente da palavra Bearer.")
+    @ApiOperation(value = "Atualiza a senha do usuário.", notes = "Esse método necessita de autenticação.")
 
     @PutMapping("/atualizarSenha")
     public ResponseEntity<?> atualizarSenha(@RequestBody @Valid AtualizacaoSenhaDto atualizacaoSenhaDto, HttpServletRequest httpServletRequest){

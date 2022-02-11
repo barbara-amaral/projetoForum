@@ -44,7 +44,7 @@ public class TopicoController {
 
     private static final Logger log = LoggerFactory.getLogger(TopicoController.class);
 
-    @ApiOperation(value = "Cadastra um novo tópico.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir um cadastro, copiar o token e colar na frente da palavra Bearer.")
+    @ApiOperation(value = "Cadastra um novo tópico.", notes = "Esse método necessita de autenticação.")
 
     @PostMapping("novotopico")
     @Transactional
@@ -66,8 +66,7 @@ public class TopicoController {
         return ResponseEntity.created(uri).body(new TopicoDto(topico));
     }
 
-    @ApiOperation(value = "Deleta um tópico.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir um cadastro, copiar o token e colar na frente da palavra Bearer." +
-            " Além disso, somente o autor do tópico pode deletá-lo. Você também precisará do ID do tópico que quer deletar.")
+    @ApiOperation(value = "Deleta um tópico.", notes = "Esse método necessita de autenticação. Além disso, somente o autor do tópico pode deletá-lo. Você também precisará do ID do tópico que quer deletar.")
 
     @DeleteMapping("/{id}")
     @Transactional
@@ -100,8 +99,7 @@ public class TopicoController {
             return ResponseEntity.notFound().build();
     }
 
-    @ApiOperation(value = "Atualiza um tópico.", notes = "Esse método necessita de autenticação. Basta fazer o login, se já possuir um cadastro, copiar o token e colar na frente da palavra Bearer." +
-            " Além disso, somente o autor do tópico pode atualizá-lo. Você também precisará do ID do tópico que quer atualizar.")
+    @ApiOperation(value = "Atualiza um tópico.", notes = "Esse método necessita de autenticação. Além disso, somente o autor do tópico pode atualizá-lo. Você também precisará do ID do tópico que quer atualizar.")
 
     @PutMapping("/{id}")
     @Transactional

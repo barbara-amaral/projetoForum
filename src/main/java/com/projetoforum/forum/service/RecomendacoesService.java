@@ -1,4 +1,4 @@
-package com.projetoforum.forum.config;
+package com.projetoforum.forum.service;
 
 import com.projetoforum.forum.config.security.TokenService;
 import com.projetoforum.forum.controller.UsuarioController;
@@ -29,11 +29,7 @@ public class RecomendacoesService {
         List<Topico> topicos = new ArrayList<>();
         List<Topico> lista = new ArrayList<>();
 
-        log.info("Procurando tags dos topicos do usuario "+ usuario.getEmail());
-
         Set<String> tags = topicoService.findTopicoByAutorNome(usuario.getNome()).stream().map(Topico::getTag).collect(Collectors.toSet());
-
-        log.info("Procurando topicos baseados nas tags...");
 
         for (String tag : tags) {
             lista = topicoService.findTopicosByTag(tag);
@@ -45,7 +41,7 @@ public class RecomendacoesService {
             }
         }
 
-        log.info("Retornando topicos.");
+        log.info("Retornando topicos de recomendacao para "+usuario.getEmail());
 
         return topicos;
     }

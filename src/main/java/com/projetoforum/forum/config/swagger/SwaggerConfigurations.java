@@ -38,7 +38,17 @@ public class SwaggerConfigurations {
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Fórum API")
-                .description("Fórum de perguntas e respostas.")
+                .description("Fórum de perguntas e respostas. \n\n" +
+                        "Informações importantes: \n\n" +
+                        "• Para a autenticação é utilizado o token JWT, e a autenticação é do tipo Bearer. \n" +
+                        "• Quase todos os métodos necessitam de autenticação, com excessão dos métodos de listar os tópicos e " +
+                        "as respostas. \n• Para fazer o login e se autenticar, é preciso ter um cadastro antes. \n" +
+                        "• Para testar métodos restritos, como o de listar os usuários cadastrados, é necessário ser um ADMIN. \n" +
+                        "• Para cadastrar um usuário ADMIN, basta cadastrar um e-mail que termine com \"@admin.com\". " +
+                        "Todos os outros recebem perfil de acesso USER. \n" +
+                        "• Se quiser receber o e-mail de boas vindas, cadastre um e-mail válido. " +
+                        "A aplicação também envia, todos os dias, e-mails de recomendações de tópicos baseados nos " +
+                        "tópicos que você cadastrou.\n • Se não quiser mais receber os e-mails, basta deletar seu usuário.")
                 .build();
     }
 }

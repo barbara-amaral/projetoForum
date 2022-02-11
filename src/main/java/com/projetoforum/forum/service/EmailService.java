@@ -1,6 +1,5 @@
 package com.projetoforum.forum.service;
 
-import com.projetoforum.forum.config.RecomendacoesService;
 import com.projetoforum.forum.controller.UsuarioController;
 import com.projetoforum.forum.model.Topico;
 import com.projetoforum.forum.model.Usuario;
@@ -42,7 +41,7 @@ public class EmailService {
 
     private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
-    @Scheduled(cron = "0 30 8 15 * *")
+    @Scheduled(cron = "0 30 8 * * *")
     public void emails() throws MessagingException, TemplateException, IOException {
 
         sendEmailRecomendacoes();
@@ -108,7 +107,6 @@ public class EmailService {
                 log.info("email enviado para " + user.getEmail());
 
                 emails.remove(user.getEmail());
-                log.info("usuario " + user.getEmail() + " removido da lista pois email ja foi enviado.");
 
                 if (emails.size() == 0) {
                     break;
