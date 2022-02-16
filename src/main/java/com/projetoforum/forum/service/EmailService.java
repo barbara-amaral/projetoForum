@@ -1,6 +1,7 @@
 package com.projetoforum.forum.service;
 
 import com.projetoforum.forum.controller.UsuarioController;
+import com.projetoforum.forum.model.EmailsUsuarios;
 import com.projetoforum.forum.model.Topico;
 import com.projetoforum.forum.model.Usuario;
 import freemarker.template.Configuration;
@@ -35,13 +36,16 @@ public class EmailService {
     @Autowired
     UsuarioService usuarioService;
 
+    @Autowired
+    EmailsUsuariosService emailsUsuariosService;
+
     boolean alreadyExecuted = false;
 
     List<String> emails;
 
     private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
-    @Scheduled(cron = "0 30 8 * * *")
+    @Scheduled(cron = "0 5 8 * * ?")
     public void emails() throws MessagingException, TemplateException, IOException {
 
         sendEmailRecomendacoes();
@@ -71,7 +75,7 @@ public class EmailService {
         log.info("Iniciando envio de emails.");
 
         if (alreadyExecuted == false) {
-            emails = usuarioService.findAll().stream().map(Usuario::getEmail).collect(Collectors.toList());
+            emails = emailsUsuariosService.findAll().stream().map(EmailsUsuarios::getEmail).collect(Collectors.toList());
             log.info("Lista possui " + emails.size() + " emails.");
             alreadyExecuted = true;
         }

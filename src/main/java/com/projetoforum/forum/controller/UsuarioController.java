@@ -3,9 +3,11 @@ package com.projetoforum.forum.controller;
 
 import com.projetoforum.forum.config.security.TokenService;
 import com.projetoforum.forum.controller.dto.*;
+import com.projetoforum.forum.model.EmailsUsuarios;
 import com.projetoforum.forum.model.Perfil;
 import com.projetoforum.forum.model.Usuario;
 import com.projetoforum.forum.service.EmailService;
+import com.projetoforum.forum.service.EmailsUsuariosService;
 import com.projetoforum.forum.service.UsuarioService;
 import freemarker.template.TemplateException;
 import io.swagger.annotations.Api;
@@ -43,6 +45,11 @@ public class UsuarioController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    EmailsUsuariosService emailsUsuariosService;
+
+    EmailsUsuarios emailsUsuarios;
+
     private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
     @ApiOperation(value = "Faz o cadastro de um novo usuário.", notes = "Esse método não necessita de autenticação." +
@@ -78,6 +85,11 @@ public class UsuarioController {
         usuarioService.save(usuario);
         log.info("Usuário salvo na base de dados.");
 
+        EmailsUsuarios emailsUsuarios = new EmailsUsuarios();
+        emailsUsuarios.setEmail(email);
+        emailsUsuariosService.save(emailsUsuarios);
+        log.info("Email salvo na lista de emails.");
+
         emailService.sendEmail(usuario);
         log.info("Email de boas vindas enviado.");
 
@@ -106,6 +118,8 @@ public class UsuarioController {
 
         log.info("Dados corretos, preparando para deletar usuário...");
 
+        emailsUsuariosService.deleteByEmail(emailUsuario);
+        log.info("Email deletado da lista de emails");
         usuarioService.deleteUsuarioByEmail(emailUsuario);
         log.info("Usuário deletado.");
         return ResponseEntity.ok("Usuário deletado com sucesso.");
@@ -147,7 +161,9 @@ public class UsuarioController {
 
         log.info("Usuário encontrado a partir do token.");
 
-       ResponseEntity<?> atualizar = atualizacaoUsuarioEmailDto.atualizar(emailUsuario, usuarioService);
+        EmailsUsuarios emailUserLista = emailsUsuariosService.findEmailsUsuariosByEmail(emailUsuario);
+
+       ResponseEntity<?> atualizar = atualizacaoUsuarioEmailDto.atualizar(emailUserLista, emailsUsuariosService, emailUsuario, usuarioService);
 
             if(atualizar.getStatusCode() == HttpStatus.BAD_REQUEST){
                 log.info("Atualização não foi concluída.");

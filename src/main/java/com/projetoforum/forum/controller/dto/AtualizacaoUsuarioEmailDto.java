@@ -1,10 +1,13 @@
 package com.projetoforum.forum.controller.dto;
 
 import com.projetoforum.forum.controller.UsuarioController;
+import com.projetoforum.forum.model.EmailsUsuarios;
 import com.projetoforum.forum.model.Usuario;
+import com.projetoforum.forum.service.EmailsUsuariosService;
 import com.projetoforum.forum.service.UsuarioService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import javax.validation.constraints.Email;
@@ -27,13 +30,20 @@ public class AtualizacaoUsuarioEmailDto {
         this.novoEmail = novoEmail;
     }
 
-    public ResponseEntity<?> atualizar(String emailUsuario, UsuarioService usuarioService){
+    public ResponseEntity<?> atualizar(EmailsUsuarios emailUserLista, EmailsUsuariosService emailsUsuariosService, String emailUsuario, UsuarioService usuarioService){
         Usuario usuario = usuarioService.findUsuarioByEmail(emailUsuario);
+
         log.info("Verificando e-mail informado...");
         if(!novoEmail.matches(emailUsuario)){
+
             usuario.setEmail(this.novoEmail);
-            log.info("Novo e-mail salvo na base de dados.");
             usuarioService.save(usuario);
+            log.info("Novo e-mail salvo na base de dados.");
+
+            emailUserLista.setEmail(this.novoEmail);
+            emailsUsuariosService.save(emailUserLista);
+            log.info("Email atualizado na lista de emails.");
+
             return ResponseEntity.ok().body(usuario);
         }else
             log.info("Ocorreu um erro: E-mail não pode ser o mesmo.");

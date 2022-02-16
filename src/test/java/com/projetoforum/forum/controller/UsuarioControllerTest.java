@@ -2,8 +2,10 @@ package com.projetoforum.forum.controller;
 
 import com.projetoforum.forum.config.security.TokenService;
 import com.projetoforum.forum.controller.dto.LoginDto;
+import com.projetoforum.forum.model.EmailsUsuarios;
 import com.projetoforum.forum.model.Perfil;
 import com.projetoforum.forum.model.Usuario;
+import com.projetoforum.forum.service.EmailsUsuariosService;
 import com.projetoforum.forum.service.TopicoService;
 import com.projetoforum.forum.service.UsuarioService;
 import org.junit.jupiter.api.Test;
@@ -52,6 +54,9 @@ class UsuarioControllerTest {
     @Autowired
     TokenService tokenService;
 
+    @Autowired
+    EmailsUsuariosService emailsUsuariosService;
+
 
     @Test
     void cadastrar() throws Exception {
@@ -66,6 +71,7 @@ class UsuarioControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(201));
 
         mongoTemplate.remove(usuarioService.findUsuarioByEmail("teste@ibm.com"));
+        mongoTemplate.remove(emailsUsuariosService.findEmailsUsuariosByEmail("teste@ibm.com"));
     }
 
     @Test
@@ -176,6 +182,9 @@ class UsuarioControllerTest {
         perfil.setNome("ROLE_USER");
         usuario.addPerfil(perfil);
         mongoTemplate.save(usuario);
+        EmailsUsuarios emailsUsuarios = new EmailsUsuarios();
+        emailsUsuarios.setEmail("teste@testando.com");
+        emailsUsuariosService.save(emailsUsuarios);
 
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("teste@testando.com");
@@ -197,6 +206,7 @@ class UsuarioControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(200));
 
         mongoTemplate.remove(usuario);
+        mongoTemplate.remove(emailsUsuarios);
 
     }
 
