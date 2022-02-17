@@ -45,7 +45,7 @@ public class EmailService {
 
     private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
-    @Scheduled(cron = "0 45 11 * * ?", zone = "UTC-3")
+    @Scheduled(cron = "0 50 11 * * ?", zone = "Brazil")
     public void emails() throws MessagingException, TemplateException, IOException {
 
         sendEmailRecomendacoes();
