@@ -45,7 +45,7 @@ public class EmailService {
 
     private static final Logger log = LoggerFactory.getLogger(UsuarioController.class);
 
-    @Scheduled(cron = "0 5 8 * * ?")
+    @Scheduled(cron = "0 50 09 * * ?")
     public void emails() throws MessagingException, TemplateException, IOException {
 
         sendEmailRecomendacoes();
