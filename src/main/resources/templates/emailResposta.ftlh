@@ -91,7 +91,7 @@ a[x-apple-data-detectors] {
                   <td class="es-m-p0r" valign="top" align="center" style="padding:0;Margin:0;width:560px"> 
                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px"> 
                      <tr style="border-collapse:collapse"> 
-                      <td align="left" class="es-m-p20l es-m-txt-l" style="padding:0;Margin:0;padding-top:10px"><h1 style="Margin:0;line-height:30px;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';font-size:30px;font-style:normal;font-weight:normal;color:#333333;text-align:center">Olá, ${user.nome}!</h1></td>
+                      <td align="left" class="es-m-p20l es-m-txt-l" style="padding:0;Margin:0;padding-top:10px"><h1 style="Margin:0;line-height:30px;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';font-size:30px;font-style:normal;font-weight:normal;color:#333333;text-align:center">Olá, ${autorTopico.nome}!</h1></td>
                      </tr> 
                    </table></td> 
                  </tr> 
@@ -124,15 +124,10 @@ a[x-apple-data-detectors] {
                   <td align="left" style="padding:0;Margin:0;width:560px"> 
                    <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px"> 
                      <tr style="border-collapse:collapse"> 
-                      <td align="left" class="es-m-p20l es-m-txt-l" style="padding:0;Margin:0;padding-top:10px"><h1 style="Margin:0;line-height:40px;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';font-size:40px;font-style:normal;font-weight:normal;color:#333333">Talvez você se interesse por esses tópicos: </h1></td>
+                      <td align="left" class="es-m-p20l es-m-txt-l" style="padding:0;Margin:0;padding-top:10px"><h1 style="Margin:0;line-height:40px;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';font-size:40px;font-style:normal;font-weight:normal;color:#333333">Seu tópico acabou de receber uma resposta! Confira: </h1></td>
                      </tr> <br>
                      <tr style="border-collapse:collapse"> 
-                      <td align="left" class="es-m-p20l" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:17px;color:#333333;font-size:14px">
-
-                      <#list topicos as topico>
-                      <tr>
-                      <td><b>Tópico:</b> ${topico.titulo}, postado por: <i>${topico.autor.nome}</i></td>
-                      </tr></#list></p></td>
+                      <td align="left" class="es-m-p20l" style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';line-height:17px;color:#333333;font-size:14px"><b>${autorResposta.nome}</b> disse: ${resposta.mensagem}</p></td>
                      </tr> 
                    </table></td> 
                  </tr> 

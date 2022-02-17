@@ -2,6 +2,7 @@ package com.projetoforum.forum.service;
 
 import com.projetoforum.forum.controller.UsuarioController;
 import com.projetoforum.forum.model.EmailsUsuarios;
+import com.projetoforum.forum.model.Resposta;
 import com.projetoforum.forum.model.Topico;
 import com.projetoforum.forum.model.Usuario;
 import freemarker.template.Configuration;
@@ -69,6 +70,16 @@ public class EmailService {
         javaMailSender.send(mimeMessage);
     }
 
+    public void sendEmailResposta(Usuario autorResposta, Resposta resposta, Usuario autorTopico) throws MessagingException, IOException, TemplateException {
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
+        helper.setSubject("Seu tópico foi respondido!");
+        helper.setTo(autorTopico.getEmail());
+        String emailContent = getEmailContentResposta(autorResposta, resposta, autorTopico);
+        helper.setText(emailContent, true);
+        javaMailSender.send(mimeMessage);
+    }
 
     public void sendEmailRecomendacoes() throws MessagingException, IOException, TemplateException {
 
@@ -136,6 +147,17 @@ public class EmailService {
         model.put("user", user);
         model.put("topicos", topicos);
         configuration.getTemplate("emailRecomendacoes.ftlh").process(model, stringWriter);
+        return stringWriter.getBuffer().toString();
+    }
+
+    String getEmailContentResposta(Usuario autorResposta, Resposta resposta, Usuario autorTopico) throws IOException, TemplateException {
+
+        StringWriter stringWriter = new StringWriter();
+        Map<String, Object> model = new HashMap<>();
+        model.put("autorTopico", autorTopico);
+        model.put("resposta", resposta);
+        model.put("autorResposta", autorResposta);
+        configuration.getTemplate("emailResposta.ftlh").process(model, stringWriter);
         return stringWriter.getBuffer().toString();
     }
 }

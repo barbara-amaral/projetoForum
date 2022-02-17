@@ -27,6 +27,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cadastro")
@@ -106,6 +107,12 @@ public class UsuarioController {
         String token = recuperarToken(httpServletRequest);
         String idUsuario = tokenService.getIdUsuario(token);
         String emailUsuario= usuarioService.findById(idUsuario).get().getEmail();
+        Optional<EmailsUsuarios> emailLista = emailsUsuariosService.findByEmail(emailUsuario);
+
+        if(!emailLista.isEmpty()){
+            emailsUsuariosService.deleteByEmail(emailLista.get().getEmail());
+            log.info("Email deletado da lista de emails");
+        }
 
         log.info("Usuário encontrado a partir do token.");
 
@@ -118,8 +125,8 @@ public class UsuarioController {
 
         log.info("Dados corretos, preparando para deletar usuário...");
 
-        emailsUsuariosService.deleteByEmail(emailUsuario);
-        log.info("Email deletado da lista de emails");
+
+
         usuarioService.deleteUsuarioByEmail(emailUsuario);
         log.info("Usuário deletado.");
         return ResponseEntity.ok("Usuário deletado com sucesso.");
@@ -161,7 +168,7 @@ public class UsuarioController {
 
         log.info("Usuário encontrado a partir do token.");
 
-        EmailsUsuarios emailUserLista = emailsUsuariosService.findEmailsUsuariosByEmail(emailUsuario);
+        Optional <EmailsUsuarios> emailUserLista = emailsUsuariosService.findByEmail(emailUsuario);
 
        ResponseEntity<?> atualizar = atualizacaoUsuarioEmailDto.atualizar(emailUserLista, emailsUsuariosService, emailUsuario, usuarioService);
 
@@ -214,6 +221,55 @@ public class UsuarioController {
         }
         log.info("Senha atualizada.");
         return ResponseEntity.ok("Senha atualizada com sucesso.");
+
+    }
+
+    @ApiOperation(value = "Retira o e-mail do usuário da lista de e-mails.", notes = "Esse método necessita de autenticação.")
+
+    @DeleteMapping("/desinscreverEmail")
+    public ResponseEntity<?> desinscreverEmail(@RequestBody @Valid DesinscreverEmailDto desinscreverEmailDto, HttpServletRequest httpServletRequest){
+
+        String token = recuperarToken(httpServletRequest);
+        String idUsuario = tokenService.getIdUsuario(token);
+        String emailUsuario= usuarioService.findById(idUsuario).get().getEmail();
+
+        if (!(desinscreverEmailDto.getEmail()).equals(emailUsuario)){
+            log.info("Email não confere. Verifique se digitou seu e-mail corretamente.");
+            return ResponseEntity.badRequest().body("Email não confere. Verifique se digitou seu e-mail corretamente.");
+        }
+
+        emailsUsuariosService.deleteByEmail(emailUsuario);
+        log.info("Email deletado da lista de emails.");
+        return ResponseEntity.ok("Você não receberá mais nossos emails.");
+
+    }
+
+    @ApiOperation(value = "Adiciona o e-mail do usuário na lista de e-mails.", notes = "Esse método necessita de autenticação.")
+
+    @PostMapping("/inscreverEmail")
+    public ResponseEntity<?> inscreverEmail(@RequestBody @Valid InscreverEmailDto inscreverEmailDto, HttpServletRequest httpServletRequest){
+
+        String token = recuperarToken(httpServletRequest);
+        String idUsuario = tokenService.getIdUsuario(token);
+        String emailUsuario= usuarioService.findById(idUsuario).get().getEmail();
+
+        Optional<EmailsUsuarios> email = emailsUsuariosService.findByEmail(emailUsuario);
+
+        if(email.isPresent()){
+            log.info("Email já cadastrado.");
+            return ResponseEntity.badRequest().body("Email já cadastrado.");
+        }
+
+        if (!(inscreverEmailDto.getEmail()).equals(emailUsuario)){
+            log.info("Email não confere. Verifique se digitou seu e-mail corretamente.");
+            return ResponseEntity.badRequest().body("Email não confere. Verifique se digitou seu e-mail corretamente.");
+        }
+
+        EmailsUsuarios emailsUsuarios = new EmailsUsuarios();
+        emailsUsuarios.setEmail(emailUsuario);
+        emailsUsuariosService.save(emailsUsuarios);
+        log.info("Email adicionado à lista de emails.");
+        return ResponseEntity.ok("Você foi adicionado na nossa lista de emails.");
 
     }
 

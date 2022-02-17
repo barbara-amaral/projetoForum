@@ -4,6 +4,7 @@ import com.projetoforum.forum.model.EmailsUsuarios;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface EmailsUsuariosService {
@@ -11,4 +12,5 @@ public interface EmailsUsuariosService {
     List<EmailsUsuarios> findAll();
     void deleteByEmail(String email);
     EmailsUsuarios findEmailsUsuariosByEmail(String email);
+    Optional<EmailsUsuarios> findByEmail(String email);
 }

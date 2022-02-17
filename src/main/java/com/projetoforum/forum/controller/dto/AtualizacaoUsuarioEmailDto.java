@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.util.Optional;
 
 public class AtualizacaoUsuarioEmailDto {
 
@@ -30,7 +31,7 @@ public class AtualizacaoUsuarioEmailDto {
         this.novoEmail = novoEmail;
     }
 
-    public ResponseEntity<?> atualizar(EmailsUsuarios emailUserLista, EmailsUsuariosService emailsUsuariosService, String emailUsuario, UsuarioService usuarioService){
+    public ResponseEntity<?> atualizar(Optional<EmailsUsuarios> emailUserLista, EmailsUsuariosService emailsUsuariosService, String emailUsuario, UsuarioService usuarioService){
         Usuario usuario = usuarioService.findUsuarioByEmail(emailUsuario);
 
         log.info("Verificando e-mail informado...");
@@ -40,9 +41,11 @@ public class AtualizacaoUsuarioEmailDto {
             usuarioService.save(usuario);
             log.info("Novo e-mail salvo na base de dados.");
 
-            emailUserLista.setEmail(this.novoEmail);
-            emailsUsuariosService.save(emailUserLista);
-            log.info("Email atualizado na lista de emails.");
+            if(!emailUserLista.isEmpty()){
+                emailUserLista.get().setEmail(this.novoEmail);
+                emailsUsuariosService.save(emailUserLista.get());
+                log.info("Email atualizado na lista de emails.");
+            }
 
             return ResponseEntity.ok().body(usuario);
         }else

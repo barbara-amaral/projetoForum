@@ -9,9 +9,11 @@ import com.projetoforum.forum.model.Resposta;
 import com.projetoforum.forum.model.StatusTopico;
 import com.projetoforum.forum.model.Topico;
 import com.projetoforum.forum.model.Usuario;
+import com.projetoforum.forum.service.EmailService;
 import com.projetoforum.forum.service.RespostaService;
 import com.projetoforum.forum.service.TopicoService;
 import com.projetoforum.forum.service.UsuarioService;
+import freemarker.template.TemplateException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -22,8 +24,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -47,6 +51,9 @@ public class RespostaController {
     @Autowired
     RespostaService respostaService;
 
+    @Autowired
+    EmailService emailService;
+
     private static final Logger log = LoggerFactory.getLogger(TopicoController.class);
 
     @ApiOperation(value = "Responde um tópico.", notes = "Esse método necessita de autenticação.")
@@ -54,7 +61,7 @@ public class RespostaController {
 
     @PostMapping("/topico/responder/{id}")
     @Transactional
-    public ResponseEntity<RespostaDto> responder (@PathVariable(value = "id") String id, @RequestBody @Valid ResponderTopicoDto responderTopicoDto, HttpServletRequest httpServletRequest){
+    public ResponseEntity<RespostaDto> responder (@PathVariable(value = "id") String id, @RequestBody @Valid ResponderTopicoDto responderTopicoDto, HttpServletRequest httpServletRequest) throws MessagingException, TemplateException, IOException {
 
         log.info("Buscando tópico através do Id...");
 
@@ -93,6 +100,11 @@ public class RespostaController {
         topicoService.save(topico);
 
         log.info("Tópico salvo na base de dados.");
+
+        Usuario autorTopico = topico.getAutor();
+        emailService.sendEmailResposta(autor, resposta, autorTopico);
+
+        log.info("Email de resposta enviado.");
 
         return ResponseEntity.ok().body(new RespostaDto(topico, resposta));
     }
