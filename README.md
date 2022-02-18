@@ -23,8 +23,9 @@ Você pode testar essa aplicação através do [Swagger](https://projeto-forum.h
   #### Atenção: 
   
   • Se quiser receber o e-mail de boas vindas, cadastre um e-mail válido. <br />
-  • A aplicação também envia, todos os dias, e-mails de recomendações de tópicos baseados nos tópicos que você cadastrou. <br />
-  • Se não quiser mais receber os e-mails, basta deletar seu usuário.
+  • A aplicação também envia um e-mail avisando caso seu tópico seja respondido, e e-mails de recomendações de tópicos baseados nos tópicos que você cadastrou. <br/>
+  • Se não quiser mais receber os e-mails, você pode retirar seu e-mail da lista de e-mails através do método apropriado. <br/>
+  • Da mesma forma, é possível recadastrar seu e-mail.
   
   
   
