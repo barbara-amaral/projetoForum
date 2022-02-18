@@ -46,9 +46,10 @@ public class SwaggerConfigurations {
                         "• Para testar métodos restritos, como o de listar os usuários cadastrados, é necessário ser um ADMIN. \n" +
                         "• Para cadastrar um usuário ADMIN, basta cadastrar um e-mail que termine com \"@admin.com\". " +
                         "Todos os outros recebem perfil de acesso USER. \n" +
-                        "• Se quiser receber o e-mail de boas vindas, cadastre um e-mail válido. " +
-                        "A aplicação também envia, todos os dias, e-mails de recomendações de tópicos baseados nos " +
-                        "tópicos que você cadastrou.\n • Se não quiser mais receber os e-mails, basta deletar seu usuário.")
+                        "• Se quiser receber o e-mail de boas vindas, cadastre um e-mail válido. \n" +
+                        "• A aplicação também envia um e-mail avisando caso seu tópico seja respondido, e e-mails de recomendações de tópicos baseados nos " +
+                        "tópicos que você cadastrou.\n • Se não quiser mais receber os e-mails, você pode retirar seu e-mail da lista de e-mails através do método apropriado. \n" +
+                        "• Da mesma forma, é possível recadastrar seu e-mail.")
                 .build();
     }
 }
